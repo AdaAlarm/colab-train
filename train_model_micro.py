@@ -1,4 +1,4 @@
-from ML.model_micro import make_model
+from model_micro import make_model
 import joblib
 
 print("load data...")
