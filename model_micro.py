@@ -15,11 +15,11 @@ def make_model(x, y):
     # Arena size: 39,632
     # Invoke time: ? seconds
 
-    nb_filters = 5  # number of convolutional filters to use
+    nb_filters = 4  # number of convolutional filters to use
     kernel_size = (2, 2)  # convolution kernel size
     pool_size = (2, 2)  # size of pooling area for pooling
 
-    nb_layers = 4
+    nb_layers = 6
 
     z = 1
 
@@ -34,9 +34,6 @@ def make_model(x, y):
     model.add(Dropout(0.5))
 
     for layer in range(nb_layers):
-        # model.add(
-        #     DepthwiseConv2D(depth_multiplier=1, kernel_size=kernel_size, padding='same')
-        # )
         model.add(Conv2D(
             nb_filters,
             kernel_size=kernel_size,
@@ -46,24 +43,13 @@ def make_model(x, y):
         ))
         model.add(BatchNormalization())
         model.add(Activation('PReLU'))
-        
-        model.add(Conv2D(
-            nb_filters,
-            kernel_size=kernel_size,
-            activation='PReLU',
-            use_bias=False,
-            padding='same'
-        ))
-        model.add(BatchNormalization())
-        model.add(Activation('PReLU'))
-        model.add(Dropout(0.5))
 
     model.add(MaxPooling2D(pool_size=pool_size))
     #model.add(AveragePooling2D(pool_size=pool_size))
 
     model.add(Flatten())
 
-    model.add(Dense(16, activation='PReLU'))
+    model.add(Dense(22, activation='PReLU'))
     model.add(Dropout(0.5))
     model.add(Dense(2, activation='softmax'))
     model.compile(
