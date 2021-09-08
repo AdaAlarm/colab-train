@@ -31,26 +31,26 @@ def make_model(x, y):
         kernel_size=kernel_size
     ))
     model.add(BatchNormalization())
-    model.add(Activation('relu'))
+    model.add(Activation('softmax'))
     model.add(Dropout(0.55))
 
     for layer in range(nb_layers):
         model.add(Conv2D(
             nb_filters,
             kernel_size=kernel_size,
-            activation='relu',
+            activation='softmax',
             use_bias=False,
             padding='same'
         ))
         model.add(BatchNormalization())
-        model.add(Activation('relu'))
+        model.add(Activation('softmax'))
 
     model.add(MaxPooling2D(pool_size=pool_size))
     #model.add(AveragePooling2D(pool_size=pool_size))
 
     model.add(Flatten())
 
-    model.add(Dense(22, activation='relu'))
+    model.add(Dense(32, activation='softmax'))
     model.add(Dropout(0.55))
     model.add(Dense(2, activation='softmax'))
     model.compile(
