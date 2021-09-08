@@ -9,27 +9,32 @@ from tensorflow.keras.optimizers import Adadelta, Adam
 from tensorflow.keras.regularizers import l2
 
 
-def make_model(x, y):
-    # prelu, 4, 6:
-    # Trainable params: 138,022
-    # Arena size: 31,344
-    # Invoke time: ~3 seconds
+def make_model(x, y, z=1):
+    # softmax, 4, 6, 32 (49x20):
+    # Trainable params: 28,262
+    # Arena size: 
+    # Invoke time: ~ seconds
     # Test accuracy: 0.89
 
-    # softmax, 4, 6:
+    # softmax, 4, 6, 32 (49x40):
     # Trainable params: 58,926
     # Arena size: 29,392
     # Invoke time: ~ seconds
     # Test accuracy: 0.89
 
-    nb_filters = 4  # number of convolutional filters to use
+    # prelu, 4, 6, 32 (49x40):
+    # Trainable params: 138,022
+    # Arena size: 31,344
+    # Invoke time: ~3 seconds
+    # Test accuracy: 0.89
+
+    
+    nb_filters = 8  # number of convolutional filters to use
     kernel_size = (2, 2)  # convolution kernel size
     pool_size = (2, 2)  # size of pooling area for pooling
 
-    nb_layers = 6
-    fully_connected = 32
-
-    z = 1
+    nb_layers = 4
+    fully_connected = 24
 
     model = Sequential()
     model.add(InputLayer(input_shape=(x, y, z)))
@@ -45,14 +50,15 @@ def make_model(x, y):
         model.add(Conv2D(
             nb_filters,
             kernel_size=kernel_size,
-            activation='softmax',
+            #activation='softmax',
             use_bias=False,
             padding='same'
         ))
         model.add(BatchNormalization())
         model.add(Activation('softmax'))
+        model.add(MaxPooling2D(pool_size=pool_size))
 
-    model.add(MaxPooling2D(pool_size=pool_size))
+    #model.add(MaxPooling2D(pool_size=pool_size))
     #model.add(AveragePooling2D(pool_size=pool_size))
 
     model.add(Flatten())
