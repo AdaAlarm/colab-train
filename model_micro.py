@@ -11,9 +11,10 @@ from tensorflow.keras.regularizers import l2
 
 def make_model(x, y):
     # Last:
-    # Trainable params: 196,581
-    # Arena size: 39,632
-    # Invoke time: ? seconds
+    # Trainable params: 138,022
+    # Arena size: 31,344
+    # Invoke time: ~3 seconds
+    # Test accuracy: 0.89
 
     nb_filters = 4  # number of convolutional filters to use
     kernel_size = (2, 2)  # convolution kernel size
@@ -30,26 +31,26 @@ def make_model(x, y):
         kernel_size=kernel_size
     ))
     model.add(BatchNormalization())
-    model.add(Activation('PReLU'))
+    model.add(Activation('relu'))
     model.add(Dropout(0.5))
 
     for layer in range(nb_layers):
         model.add(Conv2D(
             nb_filters,
             kernel_size=kernel_size,
-            activation='PReLU',
+            activation='relu',
             use_bias=False,
             padding='same'
         ))
         model.add(BatchNormalization())
-        model.add(Activation('PReLU'))
+        model.add(Activation('relu'))
 
     model.add(MaxPooling2D(pool_size=pool_size))
     #model.add(AveragePooling2D(pool_size=pool_size))
 
     model.add(Flatten())
 
-    model.add(Dense(22, activation='PReLU'))
+    model.add(Dense(22, activation='relu'))
     model.add(Dropout(0.5))
     model.add(Dense(2, activation='softmax'))
     model.compile(
