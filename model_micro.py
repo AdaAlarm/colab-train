@@ -10,7 +10,7 @@ from tensorflow.keras.regularizers import l2
 
 
 def make_model(x, y):
-    # Last:
+    # prelu, 4, 6:
     # Trainable params: 138,022
     # Arena size: 31,344
     # Invoke time: ~3 seconds
@@ -32,7 +32,7 @@ def make_model(x, y):
     ))
     model.add(BatchNormalization())
     model.add(Activation('relu'))
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.55))
 
     for layer in range(nb_layers):
         model.add(Conv2D(
@@ -51,7 +51,7 @@ def make_model(x, y):
     model.add(Flatten())
 
     model.add(Dense(22, activation='relu'))
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.55))
     model.add(Dense(2, activation='softmax'))
     model.compile(
         loss='binary_crossentropy',
