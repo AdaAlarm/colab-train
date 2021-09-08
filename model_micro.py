@@ -16,11 +16,18 @@ def make_model(x, y):
     # Invoke time: ~3 seconds
     # Test accuracy: 0.89
 
+    # softmax, 4, 6:
+    # Trainable params: 58,926
+    # Arena size: 29,392
+    # Invoke time: ~ seconds
+    # Test accuracy: 0.89
+
     nb_filters = 4  # number of convolutional filters to use
     kernel_size = (2, 2)  # convolution kernel size
     pool_size = (2, 2)  # size of pooling area for pooling
 
     nb_layers = 6
+    fully_connected = 32
 
     z = 1
 
@@ -32,7 +39,7 @@ def make_model(x, y):
     ))
     model.add(BatchNormalization())
     model.add(Activation('softmax'))
-    model.add(Dropout(0.55))
+    model.add(Dropout(0.5))
 
     for layer in range(nb_layers):
         model.add(Conv2D(
@@ -50,8 +57,8 @@ def make_model(x, y):
 
     model.add(Flatten())
 
-    model.add(Dense(32, activation='softmax'))
-    model.add(Dropout(0.55))
+    model.add(Dense(fully_connected, activation='softmax'))
+    model.add(Dropout(0.5))
     model.add(Dense(2, activation='softmax'))
     model.compile(
         loss='binary_crossentropy',
@@ -66,5 +73,5 @@ def make_model(x, y):
 
 
 if __name__ == "__main__":
-    model = make_model(49, 40)
+    model = make_model(49, 20)
     model.summary()
