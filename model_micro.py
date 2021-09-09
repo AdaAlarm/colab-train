@@ -10,11 +10,17 @@ from tensorflow.keras.regularizers import l2
 
 
 def make_model(x, y, z=1):
-    # softmax, 16, 4, 16 (49x20):
+    # softmax, 20, 3, 24 (49x20):
     # Trainable params: 
     # Arena size: 
     # Invoke time: ~ seconds
-    # Test accuracy: 
+    # Test accuracy: 0.
+
+    # softmax, 16, 4, 16 (49x20):
+    # Trainable params: 5,314
+    # Arena size: 37,968
+    # Invoke time: ~ seconds
+    # Test accuracy: 0.888
 
     # softmax, 4, 6, 32 (49x20):
     # Trainable params: 28,262
@@ -34,13 +40,12 @@ def make_model(x, y, z=1):
     # Invoke time: ~3 seconds
     # Test accuracy: 0.89
 
-    
-    nb_filters = 16  # number of convolutional filters to use
+    nb_filters = 20  # number of convolutional filters to use
     kernel_size = (2, 2)  # convolution kernel size
     pool_size = (2, 2)  # size of pooling area for pooling
 
-    nb_layers = 4
-    fully_connected = 16
+    nb_layers = 3
+    fully_connected = 24
 
     model = Sequential()
     model.add(InputLayer(input_shape=(x, y, z)))
