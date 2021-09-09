@@ -40,7 +40,7 @@ def make_model(x, y, z=1):
     # Invoke time: ~3 seconds
     # Test accuracy: 0.89
 
-    lr = l2(1e-4)
+    lr = l2(0.01)
 
     nb_filters = 10  # number of convolutional filters to use
     kernel_size = (2, 2)  # convolution kernel size
