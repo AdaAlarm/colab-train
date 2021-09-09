@@ -10,49 +10,27 @@ from tensorflow.keras.regularizers import l2
 
 
 def make_model(x, y, z=1):
-    # softmax, 20, 3, 24 (49x20):
-    # Trainable params: 
-    # Arena size: 
-    # Invoke time: ~ seconds
-    # Test accuracy: 0.
-
-    # softmax, 16, 4, 16 (49x20):
-    # Trainable params: 5,314
-    # Arena size: 37,968
-    # Invoke time: ~ seconds
-    # Test accuracy: 0.888
-
-    # softmax, 4, 6, 32 (49x20):
-    # Trainable params: 28,262
-    # Arena size: 
-    # Invoke time: ~ seconds
-    # Test accuracy: 0.89
-
-    # softmax, 4, 6, 32 (49x40):
-    # Trainable params: 58,926
-    # Arena size: 29,392
-    # Invoke time: ~ seconds
-    # Test accuracy: 0.89
-
-    # prelu, 4, 6, 32 (49x40):
+    # prelu, 4, 6:
     # Trainable params: 138,022
     # Arena size: 31,344
     # Invoke time: ~3 seconds
     # Test accuracy: 0.89
 
-    nb_filters = 10  # number of convolutional filters to use
+    # softmax, 4, 6:
+    # Trainable params: 58,926
+    # Arena size: 29,392
+    # Invoke time: ~ seconds
+    # Test accuracy: 0.89
+
+    nb_filters = 12  # number of convolutional filters to use
     kernel_size = (2, 2)  # convolution kernel size
     pool_size = (2, 2)  # size of pooling area for pooling
 
-    nb_layers = 3
-    fully_connected = 32
+    nb_layers = 4
+    fully_connected = 24
 
     model = Sequential()
     model.add(InputLayer(input_shape=(x, y, z)))
-    model.add(Dense(
-        16,
-        kernel_regularizer='l2'
-    ))
     model.add(Conv2D(
         nb_filters,
         kernel_size=kernel_size
@@ -65,22 +43,20 @@ def make_model(x, y, z=1):
         model.add(Conv2D(
             nb_filters,
             kernel_size=kernel_size,
-            kernel_regularizer='l2',
-            #activation='softmax',
+            activation='softmax',
             use_bias=False,
             padding='same'
         ))
         model.add(BatchNormalization())
         model.add(Activation('softmax'))
-        model.add(MaxPooling2D(pool_size=pool_size))
 
-    #model.add(MaxPooling2D(pool_size=pool_size))
+    model.add(MaxPooling2D(pool_size=pool_size))
     #model.add(AveragePooling2D(pool_size=pool_size))
 
     model.add(Flatten())
 
     model.add(Dense(fully_connected, activation='softmax'))
-    model.add(Dropout(0.6))
+    model.add(Dropout(0.5))
     model.add(Dense(2, activation='softmax'))
     model.compile(
         loss='binary_crossentropy',
