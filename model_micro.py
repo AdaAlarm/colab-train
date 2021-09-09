@@ -43,7 +43,7 @@ def make_model(x, y, z=1):
     fully_connected = 16
 
     model = Sequential()
-    model.add(InputLayer(input_shape=(x, y, z))
+    model.add(InputLayer(input_shape=(x, y, z)))
     model.add(Conv2D(
         nb_filters,
         kernel_size=kernel_size
