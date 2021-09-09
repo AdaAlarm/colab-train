@@ -40,6 +40,8 @@ def make_model(x, y, z=1):
     # Invoke time: ~3 seconds
     # Test accuracy: 0.89
 
+    lr = l2(1e-4)
+
     nb_filters = 10  # number of convolutional filters to use
     kernel_size = (2, 2)  # convolution kernel size
     pool_size = (2, 2)  # size of pooling area for pooling
@@ -49,7 +51,10 @@ def make_model(x, y, z=1):
 
     model = Sequential()
     model.add(InputLayer(input_shape=(x, y, z)))
-    model.add(Dense(nb_filters))
+    model.add(Dense(
+        nb_filters,
+        kernel_regularizer=l2
+    ))
     model.add(Conv2D(
         nb_filters,
         kernel_size=kernel_size
@@ -62,6 +67,7 @@ def make_model(x, y, z=1):
         model.add(Conv2D(
             nb_filters,
             kernel_size=kernel_size,
+            kernel_regularizer=l2,
             #activation='softmax',
             use_bias=False,
             padding='same'
