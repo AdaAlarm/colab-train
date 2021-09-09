@@ -45,12 +45,12 @@ def make_model(x, y, z=1):
     pool_size = (2, 2)  # size of pooling area for pooling
 
     nb_layers = 3
-    fully_connected = 16
+    fully_connected = 32
 
     model = Sequential()
     model.add(InputLayer(input_shape=(x, y, z)))
     model.add(Dense(
-        nb_filters,
+        16,
         kernel_regularizer='l2'
     ))
     model.add(Conv2D(
