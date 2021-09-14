@@ -32,14 +32,14 @@ def make_model(x, y, z=1):
     # Test accuracy: 0.89
 
     
-    nb_filters = 16  # number of convolutional filters to use
+    nb_filters = 15  # number of convolutional filters to use
     kernel_size = (2, 2)  # convolution kernel size
     pool_size = (2, 2)  # size of pooling area for pooling
 
     nb_layers = 4
-    fully_connected = 22
+    fully_connected = 32
 
-    #lr = l2(0.01)
+    lr = l2(0.01)
 
     model = Sequential()
     model.add(InputLayer(input_shape=(x, y, z)))
@@ -48,12 +48,13 @@ def make_model(x, y, z=1):
         model.add(Conv2D(
             nb_filters,
             kernel_size=kernel_size,
-            #kernel_regularizer=lr,
+            kernel_regularizer=lr,
             use_bias=False,
             padding='same'
         ))
         model.add(BatchNormalization())
-        model.add(Activation('relu'))
+        if layer > 0:
+            model.add(Activation('ReLU'))
         model.add(MaxPooling2D(pool_size=pool_size))
         model.add(Dropout(0.5))
 
@@ -64,7 +65,7 @@ def make_model(x, y, z=1):
 
     model.add(Dense(
         fully_connected,
-        activation='relu',
+        activation='ReLU',
         #kernel_regularizer=lr
     ))
     model.add(Dropout(0.55))
@@ -72,7 +73,9 @@ def make_model(x, y, z=1):
     model.compile(
         loss='binary_crossentropy',
         optimizer=Adam(learning_rate=3e-4),
-        #optimizer=tf.keras.optimizers.SGD(learning_rate=0.05, nesterov=True),
+        # optimizer=Adadelta(
+        #     learning_rate=1.0, rho=0.9999, epsilon=1e-08, decay=0.
+        # ),
         metrics=['accuracy']
     )
 
