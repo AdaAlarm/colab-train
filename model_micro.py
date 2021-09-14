@@ -32,12 +32,12 @@ def make_model(x, y, z=1):
     # Test accuracy: 0.89
 
     
-    nb_filters = 24  # number of convolutional filters to use
+    nb_filters = 18  # number of convolutional filters to use
     kernel_size = (2, 2)  # convolution kernel size
     pool_size = (2, 2)  # size of pooling area for pooling
 
     nb_layers = 4
-    fully_connected = 30
+    fully_connected = 22
 
     #lr = l2(0.01)
 
