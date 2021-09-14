@@ -5,7 +5,7 @@ print("load data...")
 
 try:
     print("cache?")
-    d = joblib.load('colab-train/data/micro-cache.pkl')
+    d = joblib.load('colab-train/data/micro-cache-40.pkl')
     (X_train, X_test, y_train, y_test, paths_train,
      paths_test) = d[0], d[1], d[2], d[3], d[4], d[5]
     print("loaded cache")
@@ -17,7 +17,7 @@ print(X_train.shape)
 
 #dx = X_train.shape[1]
 
-dx, dy, dz = 49, 20, 1
+dx, dy, dz = 49, 40, 1
 
 
 X_train = X_train.reshape((X_train.shape[0], dx, dy, dz))

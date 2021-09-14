@@ -72,8 +72,8 @@ def make_model(x, y, z=1):
     model.add(Dense(2, activation='softmax'))
     model.compile(
         loss='binary_crossentropy',
-        #optimizer=Adam(learning_rate=3e-4),
-        optimizer=tf.keras.optimizers.SGD(learning_rate=0.05, nesterov=True),
+        optimizer=Adam(learning_rate=3e-4),
+        #optimizer=tf.keras.optimizers.SGD(learning_rate=0.05, nesterov=True),
         metrics=['accuracy']
     )
 
@@ -81,5 +81,5 @@ def make_model(x, y, z=1):
 
 
 if __name__ == "__main__":
-    model = make_model(49, 20)
+    model = make_model(49, 40)
     model.summary()
