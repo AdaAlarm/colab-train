@@ -54,7 +54,7 @@ def make_model(x, y, z=1):
         model.add(Conv2D(
             nb_filters,
             kernel_size=kernel_size,
-            kernel_regularizer=lr,
+            #kernel_regularizer=lr,
             #activation='softmax',
             use_bias=False,
             padding='same'
@@ -72,7 +72,7 @@ def make_model(x, y, z=1):
     model.add(Dense(
         fully_connected,
         activation='softmax',
-        kernel_regularizer=lr
+        #kernel_regularizer=lr
     ))
     model.add(Dropout(0.65))
     model.add(Dense(2, activation='softmax'))
