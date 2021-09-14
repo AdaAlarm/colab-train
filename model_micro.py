@@ -10,6 +10,9 @@ from tensorflow.keras.regularizers import l2
 
 
 def make_model(x, y, z=1):
+    # softmax
+    # epoch 450: loss: 0.4315 - accuracy: 0.8193 - val_loss: 0.3511 - val_accuracy: 0.8632
+
     # softmax, 4, 6, 32 (49x20):
     # Trainable params: 28,262
     # Arena size: 
@@ -36,6 +39,8 @@ def make_model(x, y, z=1):
     nb_layers = 4
     fully_connected = 20
 
+    lr = l2(0.001)
+
     model = Sequential()
     model.add(InputLayer(input_shape=(x, y, z)))
     model.add(Conv2D(
@@ -49,6 +54,7 @@ def make_model(x, y, z=1):
         model.add(Conv2D(
             nb_filters,
             kernel_size=kernel_size,
+            kernel_regularizer=lr,
             #activation='PReLU',
             use_bias=False,
             padding='same'
@@ -64,7 +70,7 @@ def make_model(x, y, z=1):
     model.add(Flatten())
 
     model.add(Dense(fully_connected, activation='PReLU'))
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.4))
     model.add(Dense(2, activation='softmax'))
     model.compile(
         loss='binary_crossentropy',
