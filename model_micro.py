@@ -53,8 +53,7 @@ def make_model(x, y, z=1):
             padding='same'
         ))
         model.add(BatchNormalization())
-        if layer > 0:
-            model.add(Activation('ReLU'))
+        model.add(Activation('relu'))
         model.add(MaxPooling2D(pool_size=pool_size))
         model.add(Dropout(0.5))
 
@@ -65,7 +64,7 @@ def make_model(x, y, z=1):
 
     model.add(Dense(
         fully_connected,
-        activation='ReLU',
+        activation='relu',
         #kernel_regularizer=lr
     ))
     model.add(Dropout(0.55))
