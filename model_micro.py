@@ -25,7 +25,7 @@ def make_model(x, y, z=1):
     # Invoke time: ~ seconds
     # Test accuracy: 0.89
 
-    # prelu, 4, 6, 32 (49x40):
+    # softmax, 4, 6, 32 (49x40):
     # Trainable params: 138,022
     # Arena size: 31,344
     # Invoke time: ~3 seconds
@@ -48,19 +48,19 @@ def make_model(x, y, z=1):
         kernel_size=kernel_size
     ))
     model.add(BatchNormalization())
-    model.add(Activation('PReLU'))
+    model.add(Activation('softmax'))
 
     for layer in range(nb_layers):
         model.add(Conv2D(
             nb_filters,
             kernel_size=kernel_size,
             kernel_regularizer=lr,
-            #activation='PReLU',
+            #activation='softmax',
             use_bias=False,
             padding='same'
         ))
         model.add(BatchNormalization())
-        model.add(Activation('PReLU'))
+        model.add(Activation('softmax'))
         model.add(MaxPooling2D(pool_size=pool_size))
         model.add(Dropout(0.5))
 
@@ -71,7 +71,7 @@ def make_model(x, y, z=1):
 
     model.add(Dense(
         fully_connected,
-        activation='PReLU',
+        activation='softmax',
         kernel_regularizer=lr
     ))
     model.add(Dropout(0.65))
