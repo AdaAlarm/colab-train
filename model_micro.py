@@ -44,6 +44,8 @@ def make_model(x, y, z=1):
     model = Sequential()
     model.add(InputLayer(input_shape=(x, y, z)))
 
+    model.add(Dense(fully_connected, activation='relu'))
+
     for layer in range(nb_layers):
         model.add(Conv2D(
             nb_filters,
@@ -53,8 +55,7 @@ def make_model(x, y, z=1):
             padding='same'
         ))
         model.add(BatchNormalization())
-        if layer > 0:
-            model.add(Activation('ReLU'))
+        model.add(Activation('relu'))
         model.add(MaxPooling2D(pool_size=pool_size))
         model.add(Dropout(0.5))
 
@@ -65,7 +66,7 @@ def make_model(x, y, z=1):
 
     model.add(Dense(
         fully_connected,
-        activation='ReLU',
+        activation='relu',
         #kernel_regularizer=lr
     ))
     model.add(Dropout(0.55))
@@ -81,5 +82,5 @@ def make_model(x, y, z=1):
 
 
 if __name__ == "__main__":
-    model = make_model(49, 40)
+    model = make_model(49, 20)
     model.summary()
