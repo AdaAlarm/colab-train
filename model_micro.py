@@ -39,7 +39,7 @@ def make_model(x, y, z=1):
     nb_layers = 4
     fully_connected = 20
 
-    lr = l2(0.0005)
+    lr = l2(0.01)
 
     model = Sequential()
     model.add(InputLayer(input_shape=(x, y, z)))
@@ -69,7 +69,11 @@ def make_model(x, y, z=1):
 
     model.add(Flatten())
 
-    model.add(Dense(fully_connected, activation='PReLU'))
+    model.add(Dense(
+        fully_connected,
+        activation='PReLU',
+        kernel_regularizer=lr
+    ))
     model.add(Dropout(0.4))
     model.add(Dense(2, activation='softmax'))
     model.compile(
