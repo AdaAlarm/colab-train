@@ -48,7 +48,7 @@ def make_model(x, y, z=1):
         kernel_size=kernel_size
     ))
     model.add(BatchNormalization())
-    model.add(Activation('softmax'))
+    model.add(Activation('relu'))
 
     for layer in range(nb_layers):
         model.add(Conv2D(
@@ -60,7 +60,7 @@ def make_model(x, y, z=1):
             padding='same'
         ))
         model.add(BatchNormalization())
-        model.add(Activation('softmax'))
+        model.add(Activation('relu'))
         model.add(MaxPooling2D(pool_size=pool_size))
         model.add(Dropout(0.5))
 
@@ -71,7 +71,7 @@ def make_model(x, y, z=1):
 
     model.add(Dense(
         fully_connected,
-        activation='softmax',
+        activation='relu',
         #kernel_regularizer=lr
     ))
     model.add(Dropout(0.65))
