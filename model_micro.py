@@ -32,12 +32,12 @@ def make_model(x, y, z=1):
     # Test accuracy: 0.89
 
     
-    nb_filters = 24  # number of convolutional filters to use
+    nb_filters = 12  # number of convolutional filters to use
     kernel_size = (2, 2)  # convolution kernel size
     pool_size = (2, 2)  # size of pooling area for pooling
 
     nb_layers = 4
-    fully_connected = 38
+    fully_connected = 24
 
     lr = l2(0.01)
 
@@ -48,7 +48,7 @@ def make_model(x, y, z=1):
         model.add(Conv2D(
             nb_filters,
             kernel_size=kernel_size,
-            #kernel_regularizer=lr,
+            kernel_regularizer=lr,
             #activation='PReLU',
             use_bias=False,
             padding='same'
@@ -69,7 +69,7 @@ def make_model(x, y, z=1):
         activation='PReLU',
         #kernel_regularizer=lr
     ))
-    model.add(Dropout(0.65))
+    model.add(Dropout(0.55))
     model.add(Dense(2, activation='softmax'))
     model.compile(
         loss='binary_crossentropy',
