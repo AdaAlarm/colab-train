@@ -24,18 +24,18 @@ def make_model(x,y=1,z=1):
         kernel_size=kernel_size
     ))
     model.add(BatchNormalization())
-    model.add(Activation('PReLU'))
+    model.add(Activation('LeakyReLU'))
 
     for layer in range(nb_layers):
         model.add(Conv2D(
             nb_filters,
             kernel_size=kernel_size,
-            #activation='PReLU',
+            #activation='LeakyReLU',
             use_bias=False,
             padding='same'
         ))
         model.add(BatchNormalization())
-        model.add(Activation('PReLU'))
+        model.add(Activation('LeakyReLU'))
         model.add(MaxPooling2D(pool_size=pool_size))
         model.add(Dropout(0.5))
 
@@ -44,9 +44,9 @@ def make_model(x,y=1,z=1):
 
     model.add(Flatten())
 
-    model.add(Dense(fully_connected, activation='PReLU'))
+    model.add(Dense(fully_connected, activation='LeakyReLU'))
     model.add(Dropout(0.5))
-    model.add(Dense(2, activation='PReLU'))
+    model.add(Dense(2, activation='LeakyReLU'))
     model.compile(
         loss='binary_crossentropy',
         optimizer=Adam(learning_rate=3e-4),
