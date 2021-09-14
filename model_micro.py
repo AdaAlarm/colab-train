@@ -74,7 +74,7 @@ def make_model(x, y, z=1):
         activation='PReLU',
         kernel_regularizer=lr
     ))
-    model.add(Dropout(0.4))
+    model.add(Dropout(0.65))
     model.add(Dense(2, activation='softmax'))
     model.compile(
         loss='binary_crossentropy',
