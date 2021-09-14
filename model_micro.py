@@ -49,13 +49,13 @@ def make_model(x, y, z=1):
             nb_filters,
             kernel_size=kernel_size,
             kernel_regularizer=lr,
-            #activation='PReLU',
+            #activation='ReLU',
             use_bias=False,
             padding='same'
         ))
         model.add(BatchNormalization())
         if layer > 0:
-            model.add(Activation('PReLU'))
+            model.add(Activation('ReLU'))
         model.add(MaxPooling2D(pool_size=pool_size))
         model.add(Dropout(0.5))
 
@@ -66,7 +66,7 @@ def make_model(x, y, z=1):
 
     model.add(Dense(
         fully_connected,
-        activation='PReLU',
+        activation='ReLU',
         #kernel_regularizer=lr
     ))
     model.add(Dropout(0.55))
