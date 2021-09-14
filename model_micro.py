@@ -54,7 +54,8 @@ def make_model(x, y, z=1):
             padding='same'
         ))
         model.add(BatchNormalization())
-        model.add(Activation('PReLU'))
+        if layer > 0:
+            model.add(Activation('PReLU'))
         model.add(MaxPooling2D(pool_size=pool_size))
         model.add(Dropout(0.5))
 
