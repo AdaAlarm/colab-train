@@ -49,7 +49,6 @@ def make_model(x, y, z=1):
             nb_filters,
             kernel_size=kernel_size,
             kernel_regularizer=lr,
-            #activation='ReLU',
             use_bias=False,
             padding='same'
         ))
@@ -73,7 +72,7 @@ def make_model(x, y, z=1):
     model.add(Dense(2, activation='softmax'))
     model.compile(
         loss='binary_crossentropy',
-        optimizer=Adam(learning_rate=3e-4),
+        optimizer=Adam(learning_rate=3e-7), # 4
         # optimizer=Adadelta(
         #     learning_rate=1.0, rho=0.9999, epsilon=1e-08, decay=0.
         # ),
