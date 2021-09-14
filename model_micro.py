@@ -73,7 +73,7 @@ def make_model(x, y, z=1):
     model.compile(
         loss='binary_crossentropy',
         #optimizer=Adam(learning_rate=3e-4),
-        optimizer=keras.optimizers.SGD(lr=0.01, nesterov=True),
+        optimizer=tf.keras.optimizers.SGD(lr=0.01, nesterov=True),
         metrics=['accuracy']
     )
 
