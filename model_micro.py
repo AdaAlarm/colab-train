@@ -10,11 +10,8 @@ from tensorflow.keras.regularizers import l2
 
 
 def make_model(x, y, z=1):
-    # prelu, 6,4, 10 (49x20)
-    # Trainable params: 
-    # Arena size: 
-    # Invoke time: ~ seconds
-    # Test accuracy: 
+    # softmax
+    # epoch 450: loss: 0.4315 - accuracy: 0.8193 - val_loss: 0.3511 - val_accuracy: 0.8632
 
     # softmax, 4, 6, 32 (49x20):
     # Trainable params: 28,262
@@ -31,27 +28,21 @@ def make_model(x, y, z=1):
     # prelu, 4, 6, 32 (49x40):
     # Trainable params: 138,022
     # Arena size: 31,344
-    # Invoke time: ~ seconds
+    # Invoke time: ~3 seconds
     # Test accuracy: 0.89
 
     
-    nb_filters = 4  # number of convolutional filters to use
+    nb_filters = 12  # number of convolutional filters to use
     kernel_size = (2, 2)  # convolution kernel size
     pool_size = (2, 2)  # size of pooling area for pooling
 
-    nb_layers = 6
+    nb_layers = 4
     fully_connected = 32
 
     lr = l2(0.01)
 
     model = Sequential()
     model.add(InputLayer(input_shape=(x, y, z)))
-    model.add(Conv2D(
-        nb_filters,
-        kernel_size=kernel_size
-    ))
-    model.add(BatchNormalization())
-    model.add(Activation('PReLU'))
 
     for layer in range(nb_layers):
         model.add(Conv2D(
