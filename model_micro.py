@@ -11,10 +11,10 @@ from tensorflow.keras.regularizers import l2
 
 def make_model(x, y, z=1):
     # softmax, 14, 4, 16 (49x20):
-    # Trainable params: 4,208
+    # Trainable params: 4,068
     # Arena size: 34,240
     # Invoke time: ~ seconds
-    # Test accuracy: .
+    # Test accuracy: .90
 
     # softmax, 20, 4, 30 (49x20):
     # Trainable params: 8,592
@@ -34,7 +34,6 @@ def make_model(x, y, z=1):
     # Arena size: 31,344
     # Invoke time: ~3 seconds
     # Test accuracy: 0.89
-
     
     nb_filters = 14  # number of convolutional filters to use
     kernel_size = (2, 2)  # convolution kernel size
@@ -51,7 +50,7 @@ def make_model(x, y, z=1):
     ))
     model.add(BatchNormalization())
     model.add(Activation('softmax'))
-    model.add(Dropout(0.55))
+    model.add(Dropout(0.6))
 
     for layer in range(nb_layers):
         model.add(Conv2D(
@@ -71,11 +70,11 @@ def make_model(x, y, z=1):
     model.add(Flatten())
 
     model.add(Dense(fully_connected, activation='softmax'))
-    model.add(Dropout(0.55))
+    model.add(Dropout(0.6))
     model.add(Dense(2, activation='softmax'))
     model.compile(
         loss='binary_crossentropy',
-        optimizer=Adam(learning_rate=3e-4),
+        optimizer=Adam(learning_rate=7e-4),
         # optimizer=Adadelta(
         #     learning_rate=1.0, rho=0.9999, epsilon=1e-08, decay=0.
         # ),
