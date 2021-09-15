@@ -50,7 +50,7 @@ def make_model(x, y, z=1):
     ))
     model.add(BatchNormalization())
     model.add(Activation('softmax'))
-    model.add(Dropout(0.7))
+    model.add(Dropout(0.5))
 
     for layer in range(nb_layers):
         model.add(Conv2D(
@@ -70,7 +70,7 @@ def make_model(x, y, z=1):
     model.add(Flatten())
 
     model.add(Dense(fully_connected, activation='softmax'))
-    model.add(Dropout(0.7))
+    model.add(Dropout(0.5))
     model.add(Dense(2, activation='softmax'))
     model.compile(
         loss='binary_crossentropy',
