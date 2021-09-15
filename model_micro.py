@@ -11,7 +11,7 @@ from tensorflow.keras.regularizers import l2
 
 def make_model(x, y, z=1):
     # softmax, 14, 4, 16 (49x20):
-    # Trainable params: 4,068
+    # Trainable params: 4,208
     # Arena size: 34,240
     # Invoke time: ~ seconds
     # Test accuracy: .90
@@ -34,23 +34,25 @@ def make_model(x, y, z=1):
     # Arena size: 31,344
     # Invoke time: ~3 seconds
     # Test accuracy: 0.89
+
     
-    nb_filters = 14  # number of convolutional filters to use
+    nb_filters = 16  # number of convolutional filters to use
     kernel_size = (2, 2)  # convolution kernel size
     pool_size = (2, 2)  # size of pooling area for pooling
 
     nb_layers = 4
-    fully_connected = 16
+    fully_connected = 18
 
     model = Sequential()
     model.add(InputLayer(input_shape=(x, y, z)))
     model.add(Conv2D(
         nb_filters,
-        kernel_size=kernel_size
+        kernel_size=kernel_size,
+        use_bias=False
     ))
     model.add(BatchNormalization())
     model.add(Activation('softmax'))
-    model.add(Dropout(0.66))
+    model.add(Dropout(0.6))
 
     for layer in range(nb_layers):
         model.add(Conv2D(
@@ -70,7 +72,7 @@ def make_model(x, y, z=1):
     model.add(Flatten())
 
     model.add(Dense(fully_connected, activation='softmax'))
-    model.add(Dropout(0.66))
+    model.add(Dropout(0.6))
     model.add(Dense(2, activation='softmax'))
     model.compile(
         loss='binary_crossentropy',
