@@ -50,7 +50,7 @@ def make_model(x, y, z=1):
     ))
     model.add(BatchNormalization())
     model.add(Activation('softmax'))
-    model.add(Dropout(0.6))
+    model.add(Dropout(0.66))
 
     for layer in range(nb_layers):
         model.add(Conv2D(
@@ -70,11 +70,11 @@ def make_model(x, y, z=1):
     model.add(Flatten())
 
     model.add(Dense(fully_connected, activation='softmax'))
-    model.add(Dropout(0.6))
+    model.add(Dropout(0.66))
     model.add(Dense(2, activation='softmax'))
     model.compile(
         loss='binary_crossentropy',
-        optimizer=Adam(learning_rate=7e-4),
+        optimizer=Adam(learning_rate=1e-4),
         # optimizer=Adadelta(
         #     learning_rate=1.0, rho=0.9999, epsilon=1e-08, decay=0.
         # ),
