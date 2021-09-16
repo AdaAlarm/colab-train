@@ -42,7 +42,7 @@ def make_model(x, y, z=1):
     nb_layers = 4
     fully_connected = 20
 
-    lr = l2(0.001)
+    lr = l2(0.0001)
 
     model = Sequential()
     model.add(InputLayer(input_shape=(x, y, z)))
