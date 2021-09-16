@@ -42,6 +42,8 @@ def make_model(x, y, z=1):
     nb_layers = 4
     fully_connected = 20
 
+    lr = l2(0.001)
+
     model = Sequential()
     model.add(InputLayer(input_shape=(x, y, z)))
     model.add(Conv2D(
@@ -57,6 +59,7 @@ def make_model(x, y, z=1):
             nb_filters,
             kernel_size=kernel_size,
             #activation='softmax',
+            kernel_regularizer=lr,
             use_bias=False,
             padding='same'
         ))
