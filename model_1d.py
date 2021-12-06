@@ -42,7 +42,7 @@ def make_model(raw_size):
     kernel_size = 3  # convolution kernel size
     pool_size = 2  # size of pooling area for max pooling
 
-    nb_layers = 8
+    nb_layers = 4
 
     regularizer = l2(1e-3)
 
@@ -62,7 +62,6 @@ def make_model(raw_size):
     ))
     model.add(BatchNormalization(axis=1, fused=False))
     model.add(Activation('relu'))
-    model.add(MaxPool1D(pool_size=pool_size))
     model.add(Dropout(0.4))
 
     for layer in range(nb_layers):
@@ -70,18 +69,16 @@ def make_model(raw_size):
             nb_filters,
             kernel_size=kernel_size,
             kernel_regularizer=regularizer,
-            activation='relu',
             use_bias=False
         ))
-
         model.add(BatchNormalization(axis=1, fused=False))
         model.add(Activation('relu'))
-        model.add(Dropout(0.45))
+        model.add(MaxPool1D(pool_size=pool_size))
+        model.add(Dropout(0.4))
 
-    model.add(MaxPool1D(pool_size=pool_size))
     model.add(Flatten())
-    model.add(Dense(nb_filters, activation='relu'))
-    model.add(Dropout(0.55))
+    model.add(Dense(nb_filters * nb_layers, activation='relu'))
+    model.add(Dropout(0.5))
     model.add(Dense(2, activation='softmax'))
     model.compile(
         loss='binary_crossentropy',
@@ -98,4 +95,3 @@ def make_model(raw_size):
 
 if __name__ == "__main__":
     model = make_model(16000)
-    model.summary()
