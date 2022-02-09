@@ -30,8 +30,8 @@ def extract_features(inputs):
     # Compute a stabilized log to get log-magnitude mel-scale spectrograms.
     log_mel_spectrograms = tf.math.log(mel_spectrograms + 1e-6)
 
-    # Compute MFCCs from log_mel_spectrograms and take the first 60.
-    mfccs = tf.signal.mfccs_from_log_mel_spectrograms(log_mel_spectrograms)[:, :, :60]
+    # Compute MFCCs from log_mel_spectrograms and take the first 40.
+    mfccs = tf.signal.mfccs_from_log_mel_spectrograms(log_mel_spectrograms)[:, :, :40]
     
     return log_mel_spectrograms
 
