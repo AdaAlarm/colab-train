@@ -20,7 +20,7 @@ X_test = X_test.reshape((X_test.shape[0], dx))
 model = make_model(dx)
 model.fit(
     X_train, y_train,
-    batch_size=256, epochs=250, verbose=1,
+    batch_size=256, epochs=1000, verbose=1,
     validation_data=(X_test, y_test),
     shuffle=True
 )
