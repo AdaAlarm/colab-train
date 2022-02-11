@@ -9,7 +9,6 @@ from tensorflow.keras.regularizers import l2
 import numpy as np
 
 
-
 def extract_features(inputs):
     sample_rate = 16000.0
 
@@ -38,7 +37,7 @@ def extract_features(inputs):
 
 def make_model(raw_size):
 
-    nb_filters = 96  # number of convolutional filters to use
+    nb_filters = 32  # number of convolutional filters to use
     kernel_size = 3  # convolution kernel size
     pool_size = 2  # size of pooling area for max pooling
 
@@ -74,7 +73,7 @@ def make_model(raw_size):
         model.add(BatchNormalization(axis=1, fused=False))
         model.add(Activation('relu'))
         model.add(MaxPool1D(pool_size=pool_size))
-        model.add(Dropout(0.4))
+        model.add(Dropout(0.5))
 
     model.add(Flatten())
     model.add(Dense(nb_filters * nb_layers, activation='relu'))

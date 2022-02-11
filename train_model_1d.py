@@ -31,4 +31,7 @@ print('Test accuracy:', score[1])
 
 model.save_weights("colab-train/data/1d_model.h5")
 
+# 09.02.22
 # loss: 0.1043 - accuracy: 0.9684 - val_loss: 0.1733 - val_accuracy: 0.9439
+# 11.02.22
+# loss: 0.0791 - accuracy: 0.9815 - val_loss: 0.1800 - val_accuracy: 0.9505
