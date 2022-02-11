@@ -20,7 +20,7 @@ X_test = X_test.reshape((X_test.shape[0], dx))
 model = make_model(dx)
 model.fit(
     X_train, y_train,
-    batch_size=256, epochs=1000, verbose=1,
+    batch_size=256, epochs=500, verbose=1,
     validation_data=(X_test, y_test),
     shuffle=True
 )
@@ -30,3 +30,5 @@ print('Test score:', score[0])
 print('Test accuracy:', score[1])
 
 model.save_weights("colab-train/data/1d_model.h5")
+
+# loss: 0.1043 - accuracy: 0.9684 - val_loss: 0.1733 - val_accuracy: 0.9439
