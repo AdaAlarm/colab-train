@@ -17,7 +17,7 @@ print(X_train.shape)
 
 #dx = X_train.shape[1]
 
-dx, dy, dz = 49, 20, 1
+dx, dy, dz = 49, 40, 1
 
 
 X_train = X_train.reshape((X_train.shape[0], dx, dy, dz))
@@ -36,3 +36,10 @@ print('Test score:', score[0])
 print('Test accuracy:', score[1])
 
 model.save_weights("colab-train/data/micro_model.h5")
+
+
+# (49,20):
+# Test accuracy: 0.9279835224151611
+
+# (49,40):
+# 
