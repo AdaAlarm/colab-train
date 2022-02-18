@@ -17,7 +17,7 @@ print(X_train.shape)
 
 #dx = X_train.shape[1]
 
-dx, dy, dz = 49, 20, 1
+dx, dy, dz = 199, 20, 1
 
 
 X_train = X_train.reshape((X_train.shape[0], dx, dy, dz))
