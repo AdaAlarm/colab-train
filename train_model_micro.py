@@ -42,4 +42,5 @@ model.save_weights("colab-train/data/micro_model.h5")
 # Test accuracy: 0.9279835224151611
 
 # (49,40):
-# 
+# Test accuracy: 0.9331275820732117
+
