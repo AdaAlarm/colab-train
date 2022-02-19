@@ -29,7 +29,12 @@ if __name__ == '__main__':
                     'epochs': 200
                 }
 
-                score = train_evaluate(conf)
+                try:
+                    score = train_evaluate(conf)
+                except:
+                    print("config doesn't work")
+                    print(conf)
+                    continue
 
                 print(70 * "*")
                 print(conf)

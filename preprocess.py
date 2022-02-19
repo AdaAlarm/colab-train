@@ -47,7 +47,7 @@ def get_data(audio_processor, model_settings, sample=False):
         baby = baby[0:50]
         other = other[0:50]
 
-    total_files = float(len(baby) + len(other))
+    total_files = len(baby) + len(other)
 
     print("files:", total_files)
     print("start preprocess...")
