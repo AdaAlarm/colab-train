@@ -1,10 +1,6 @@
-from preprocess import get_train_test
-from model1d import make_model
-
-import joblib
-from train_model_micro import default_conf
+from conf import default_conf
 from preprocess import make_front_end
-
+from preprocess import get_train_test
 
 def make_data(conf=default_conf):
 
@@ -14,7 +10,7 @@ def make_data(conf=default_conf):
         conf["feature_bin_count"]
     )
 
-    return get_train_test(split_ratio.95)
+    return get_train_test(split_ratio=.95)
 
 
 if __name__ == '__main__':

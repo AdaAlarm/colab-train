@@ -1,8 +1,8 @@
+import glob
 import numpy as np
 from sklearn.model_selection import train_test_split
-from ML.config import MLpath
-from ML.constants import CRYING, NOT_CRYING
-from ML.utils import models, input_data
+from adaconstants import CRYING, NOT_CRYING
+from utils import models, input_data
 import tensorflow as tf
 
 sess = tf.compat.v1.InteractiveSession()
@@ -27,7 +27,7 @@ def make_front_end(size=30, stride=20, bins=20):
     return audio_processor
 
 
-def file_to_vec(audio_processor=make_front_end(), filename=None, y=None, sr=config.mic_rate):
+def file_to_vec(audio_processor, filename=None):
 
     results = audio_processor.get_features_for_wav(
         filename, model_settings, sess
@@ -36,7 +36,7 @@ def file_to_vec(audio_processor=make_front_end(), filename=None, y=None, sr=conf
     return results[0]
 
 
-def get_data(sample=False, audio_processor):
+def get_data(audio_processor, sample=False):
     baby = glob.glob("colab-train/dataset/baby/*.wav")
     other = glob.glob("colab-train/dataset/other/*.wav")
 
@@ -96,7 +96,7 @@ def return_train_test(split_ratio, X, y, files, micro, sample):
 
 
 def get_train_test(audio_processor=make_front_end(), split_ratio=0.8, sample=False):
-    X, y, files = get_data(sample=sample, audio_processor)
+    X, y, files = get_data(audio_processor=audio_processor, sample=sample)
 
     assert X.shape[0] == len(y)
 
