@@ -24,10 +24,10 @@ def make_front_end(size=30, stride=20, bins=20):
         None, None, 0, 0, '', 0, 0, model_settings, None
     )
 
-    return audio_processor
+    return audio_processor, model_settings
 
 
-def file_to_vec(audio_processor, filename=None):
+def file_to_vec(audio_processor, model_settings, filename=None):
 
     results = audio_processor.get_features_for_wav(
         filename, model_settings, sess
@@ -36,7 +36,7 @@ def file_to_vec(audio_processor, filename=None):
     return results[0]
 
 
-def get_data(audio_processor, sample=False):
+def get_data(audio_processor, model_settings, sample=False):
     baby = glob.glob("colab-train/dataset/baby/*.wav")
     other = glob.glob("colab-train/dataset/other/*.wav")
 
@@ -56,7 +56,7 @@ def get_data(audio_processor, sample=False):
     for f in baby:
         data.append(
             {
-                "x": file_to_vec(audio_processor, f),
+                "x": file_to_vec(audio_processor, model_settings, f),
                 "y": CRYING,
                 "path": f
             }
@@ -66,7 +66,7 @@ def get_data(audio_processor, sample=False):
     for f in other:
         data.append(
             {
-                "x": file_to_vec(audio_processor, f),
+                "x": file_to_vec(audio_processor, model_settings, f),
                 "y": NOT_CRYING,
                 "path": f
             }
@@ -95,8 +95,16 @@ def return_train_test(split_ratio, X, y, files, micro, sample):
     return X_train, X_test, y_train, y_test, paths_train, paths_test
 
 
-def get_train_test(audio_processor=make_front_end(), split_ratio=0.8, sample=False):
-    X, y, files = get_data(audio_processor=audio_processor, sample=sample)
+def get_train_test(audio_processor=None, model_settings=None, split_ratio=0.8, sample=False):
+    if audio_processor is None:
+        # default
+        audio_processor, model_settings = make_front_end()
+
+    X, y, files = get_data(
+        audio_processor=audio_processor,
+        model_settings=model_settings,
+        sample=sample
+    )
 
     assert X.shape[0] == len(y)
 

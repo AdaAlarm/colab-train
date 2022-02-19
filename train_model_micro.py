@@ -4,7 +4,6 @@ from preprocess_micro import make_data
 from conf import default_conf
 
 def train_evaluate(config=default_conf):
-
     (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
 
     dx, dy, dz = X_train.shape[1], X_train.shape[2], 1
