@@ -18,12 +18,14 @@ def train_evaluate(config=default_conf):
         validation_data=(X_test, y_test),
         shuffle=True
     )
-    model.summary()
+    #model.summary()
     score = model.evaluate(X_test, y_test, verbose=0)
-    print('Test score:', score[0])
-    print('Test accuracy:', score[1])
+    # print('Test score:', score[0])
+    # print('Test accuracy:', score[1])
 
-    model.save_weights("colab-train/data/micro_model.h5")
+    #model.save_weights("colab-train/data/micro_model.h5")
+
+    return score
 
 
 if __name__ == '__main__':

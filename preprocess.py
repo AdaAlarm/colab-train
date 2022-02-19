@@ -50,6 +50,7 @@ def get_data(audio_processor, model_settings, sample=False):
     total_files = float(len(baby) + len(other))
 
     print("files:", total_files)
+    print("start preprocess...")
     c = 0
 
     data = []
@@ -62,7 +63,7 @@ def get_data(audio_processor, model_settings, sample=False):
             }
         )
         c += 1
-        print((c/total_files)*100, "%")
+        #print((c/total_files)*100, "%")
     for f in other:
         data.append(
             {
@@ -72,7 +73,9 @@ def get_data(audio_processor, model_settings, sample=False):
             }
         )
         c += 1
-        print((c/total_files)*100, "%")
+        #print((c/total_files)*100, "%")
+
+    print("preprocess done")
 
     np.random.shuffle(data)
 
