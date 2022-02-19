@@ -3,9 +3,9 @@ import joblib
 from preprocess_micro import make_data
 from conf import default_conf
 
-def train_evaluate(conf=default_conf):
+def train_evaluate(config=default_conf):
 
-    (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(conf)
+    (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
 
     dx, dy, dz = X_train.shape[1], X_train.shape[2], 1
 
@@ -15,7 +15,7 @@ def train_evaluate(conf=default_conf):
     model = make_model(dx, dy)
     model.fit(
         X_train, y_train,
-        batch_size=256, epochs=conf["epochs"], verbose=1,
+        batch_size=256, epochs=config["epochs"], verbose=1,
         validation_data=(X_test, y_test),
         shuffle=True
     )
