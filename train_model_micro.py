@@ -2,9 +2,16 @@ from model_micro import make_model
 import joblib
 from preprocess_micro import make_data
 
-def train_evaluate():
+default_conf = {
+    'window_size_ms': 30,
+    'window_stride_ms': 20,
+    'feature_bin_count': 20,
+    'epochs': 20
+}
 
-    (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data()
+def train_evaluate(conf=default_conf):
+
+    (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(conf)
 
     dx, dy, dz = X_train.shape[1], X_train.shape[2], 1
 
@@ -14,7 +21,7 @@ def train_evaluate():
     model = make_model(dx, dy)
     model.fit(
         X_train, y_train,
-        batch_size=256, epochs=1000, verbose=1,
+        batch_size=256, epochs=conf["epochs"], verbose=1,
         validation_data=(X_test, y_test),
         shuffle=True
     )
