@@ -28,7 +28,7 @@ if __name__ == '__main__':
                     'window_size_ms': window_size,
                     'window_stride_ms': window_stride_ms,
                     'feature_bin_count': feature_bin_count,
-                    'epochs': 200
+                    'epochs': 250
                 }
 
                 try:
