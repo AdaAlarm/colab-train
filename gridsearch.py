@@ -1,9 +1,9 @@
 from train_model_micro import train_evaluate
 
 default_conf = {
-    'window_size_ms': 30,
-    'window_stride_ms': 20,
-    'feature_bin_count': 20,
+    'window_size_ms': 40,
+    'window_stride_ms': 30,
+    'feature_bin_count': 30,
     'epochs': 20
 }
 
@@ -13,20 +13,20 @@ default_conf = {
 if __name__ == '__main__':
     results = []
 
-    for ws in [20, 25, 30, 40]:
+    for ws in [35, 40, 35]:
         window_size = ws
 
-        for x in [1/2, 2/3, 3/4]:
+        for x in [2/3, 3/4, 4/5]:
             window_stride_ms = int(window_size*x)
 
-            for fb in [15, 20, 30]:
+            for fb in [25, 30, 35]:
                 feature_bin_count = fb
 
                 conf = {
                     'window_size_ms': window_size,
                     'window_stride_ms': window_stride_ms,
                     'feature_bin_count': feature_bin_count,
-                    'epochs': 100
+                    'epochs': 200
                 }
 
                 try:
