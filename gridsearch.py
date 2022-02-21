@@ -26,13 +26,13 @@ if __name__ == '__main__':
 
                 conf = {
                     'window_size_ms': window_size,
-                    'window_stride_ms': window_stride_ms,
+                    'window_stride_ms': 5window_stride_ms,
                     'feature_bin_count': feature_bin_count,
                     'epochs': 350
                 }
 
                 try:
-                    score = train_evaluate(conf)
+                    score, shape = train_evaluate(conf)
                 except:
                     print("config doesn't work")
                     print(conf)
@@ -44,7 +44,7 @@ if __name__ == '__main__':
                 print('Test accuracy:', score[1])
                 print(70 * "*")
 
-                results.append((conf, score))
+                results.append((conf, shape, score))
 
     print("FINALLY DONE")
     print(results)
