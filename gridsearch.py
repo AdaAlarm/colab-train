@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
                 conf = {
                     'window_size_ms': window_size,
-                    'window_stride_ms': 5window_stride_ms,
+                    'window_stride_ms': window_stride_ms,
                     'feature_bin_count': feature_bin_count,
                     'epochs': 350
                 }
