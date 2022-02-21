@@ -15,20 +15,20 @@ default_conf = {
 if __name__ == '__main__':
     results = []
 
-    for ws in [35, 37, 40, 42, 45, 50]:
+    for ws in [45, 50, 55, 60]:
         window_size = ws
 
-        for x in [2/3, 3/4, 4/5]:
+        for x in [4/5, 5/6, 6/7]:
             window_stride_ms = int(window_size*x)
 
-            for fb in [25, 30, 35]:
+            for fb in [25, 30]:
                 feature_bin_count = fb
 
                 conf = {
                     'window_size_ms': window_size,
                     'window_stride_ms': window_stride_ms,
                     'feature_bin_count': feature_bin_count,
-                    'epochs': 250
+                    'epochs': 350
                 }
 
                 try:

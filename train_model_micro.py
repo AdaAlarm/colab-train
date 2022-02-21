@@ -8,6 +8,8 @@ def train_evaluate(config=default_conf):
 
     dx, dy, dz = X_train.shape[1], X_train.shape[2], 1
 
+    print("shape:", (dx,dy))
+
     X_train = X_train.reshape((X_train.shape[0], dx, dy, dz))
     X_test = X_test.reshape((X_test.shape[0], dx, dy, dz))
 

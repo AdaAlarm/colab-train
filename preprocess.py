@@ -7,6 +7,19 @@ import tensorflow as tf
 
 sess = tf.compat.v1.InteractiveSession()
 
+def get_vector_shape(filename, config):
+    audio_processor, model_settings = make_front_end(
+        config["window_size_ms"],
+        config["window_stride_ms"],
+        config["feature_bin_count"],
+    )
+
+    vec = file_to_vec(audio_processor, model_settings, filename)
+
+    return vec.shape
+
+# /Users/askemottelson/Dropbox/babyalarm/ada-alarm/ML/data/dataset.1s.16k/baby/26-02-2020 09.25.23 89.90% 22.07dB.mp3_7.75.16k.wav
+
 
 def make_front_end(size=30, stride=20, bins=20):
 
