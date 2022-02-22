@@ -15,10 +15,10 @@ default_conf = {
 if __name__ == '__main__':
     results = []
 
-    for ws in [45, 50, 55, 60]:
+    for ws in [55, 60, 70, 80]:
         window_size = ws
 
-        for x in [4/5, 5/6, 6/7]:
+        for x in [5/6, 6/7]:
             window_stride_ms = int(window_size*x)
 
             for fb in [25, 30]:
