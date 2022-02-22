@@ -10,6 +10,12 @@ from tensorflow.keras.regularizers import l2
 
 
 def make_model(x, y, z=1):
+    # softmax, 14, 4 (49x20):
+    # Trainable params: 3,572
+    # Arena size: 33,456
+    # Invoke time: ~ seconds
+    # Test accuracy: .89
+
     # softmax, 14, 4, 16 (49x20):
     # Trainable params: 4,068
     # Arena size: 34,240
@@ -22,24 +28,12 @@ def make_model(x, y, z=1):
     # Invoke time: ~ seconds
     # Test accuracy: .91
 
-
-    # softmax, 4, 6, 32 (49x40):
-    # Trainable params: 58,926
-    # Arena size: 29,392
-    # Invoke time: ~ seconds
-    # Test accuracy: 0.89
-
-    # prelu, 4, 6, 32 (49x40):
-    # Trainable params: 138,022
-    # Arena size: 31,344
-    # Invoke time: ~3 seconds
-    # Test accuracy: 0.89
     
-    nb_filters = 14  # number of convolutional filters to use
+    nb_filters = 16  # number of convolutional filters to use
     kernel_size = (2, 2)  # convolution kernel size
     pool_size = (2, 2)  # size of pooling area for pooling
 
-    nb_layers = 4
+    nb_layers = 7
     #fully_connected = 20
 
     model = Sequential()
@@ -63,7 +57,8 @@ def make_model(x, y, z=1):
         ))
         model.add(BatchNormalization())
         model.add(Activation('softmax'))
-        model.add(MaxPooling2D(pool_size=pool_size))
+        #model.add(MaxPooling2D(pool_size=pool_size))
+    model.add(MaxPooling2D(pool_size=pool_size))
 
     #model.add(MaxPooling2D(pool_size=pool_size))
     #model.add(AveragePooling2D(pool_size=pool_size))
@@ -86,5 +81,5 @@ def make_model(x, y, z=1):
 
 
 if __name__ == "__main__":
-    model = make_model(49, 20)
+    model = make_model(22, 30)
     model.summary()
