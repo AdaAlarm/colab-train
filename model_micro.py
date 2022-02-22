@@ -29,11 +29,11 @@ def make_model(x, y, z=1):
     # Test accuracy: .91
 
     
-    nb_filters = 16  # number of convolutional filters to use
+    nb_filters = 17  # number of convolutional filters to use
     kernel_size = (2, 2)  # convolution kernel size
     pool_size = (2, 2)  # size of pooling area for pooling
 
-    nb_layers = 7
+    nb_layers = 4
     #fully_connected = 20
 
     model = Sequential()
@@ -57,8 +57,7 @@ def make_model(x, y, z=1):
         ))
         model.add(BatchNormalization())
         model.add(Activation('softmax'))
-        #model.add(MaxPooling2D(pool_size=pool_size))
-    model.add(MaxPooling2D(pool_size=pool_size))
+        model.add(MaxPooling2D(pool_size=pool_size))
 
     #model.add(MaxPooling2D(pool_size=pool_size))
     #model.add(AveragePooling2D(pool_size=pool_size))
