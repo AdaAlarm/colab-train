@@ -1,6 +1,6 @@
 default_conf = {
-    'window_size_ms': 30,
-    'window_stride_ms': 20,
-    'feature_bin_count': 20,
-    'epochs': 20
+    'window_size_ms': 55,
+    'window_stride_ms': 45,
+    'feature_bin_count': 30,
+    'epochs': 2000
 }
