@@ -10,7 +10,7 @@ from tensorflow.keras.regularizers import l2
 
 
 def make_model(x, y, z=1):
-    nb_filters = 27  # number of convolutional filters to use
+    nb_filters = 32  # number of convolutional filters to use
     kernel_size = (2, 2)  # convolution kernel size
     pool_size = (2, 2)  # size of pooling area for pooling
 
@@ -20,14 +20,14 @@ def make_model(x, y, z=1):
     model = Sequential()
     model.add(InputLayer(input_shape=(x, y, z)))
     
-    for layer in range(nb_layers-1):
-        model.add(Conv2D(
-            nb_filters,
-            kernel_size=kernel_size
-        ))
-        model.add(BatchNormalization())
-        model.add(Activation('softmax'))
-        model.add(Dropout(0.5))
+    #for layer in range(nb_layers-1):
+    model.add(Conv2D(
+        nb_filters,
+        kernel_size=kernel_size
+    ))
+    model.add(BatchNormalization())
+    model.add(Activation('softmax'))
+    model.add(Dropout(0.5))
 
     for layer in range(nb_layers-1):
         model.add(Conv2D(
