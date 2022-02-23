@@ -29,7 +29,7 @@ def make_model(x, y, z=1):
     model.add(Activation('softmax'))
     model.add(Dropout(0.5))
 
-    for layer in range(nb_layers-1):
+    for layer in range(nb_layers):
         model.add(Conv2D(
             nb_filters,
             kernel_size=kernel_size,
