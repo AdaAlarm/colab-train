@@ -50,7 +50,7 @@ def make_model(x, y, z=1):
 
     #model.add(Dense(fully_connected, activation='softmax'))
     model.add(Dropout(0.5))
-    model.add(Dense(2, activation='softmax'))
+    model.add(Dense(2))#, activation='softmax'))
     model.compile(
         loss=BinaryCrossentropy(
             from_logits=True
