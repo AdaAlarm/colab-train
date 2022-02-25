@@ -5,6 +5,7 @@ from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Reshape
 from tensorflow.keras.layers import InputLayer, Conv2D, MaxPooling2D, Lambda, BatchNormalization
 from tensorflow.keras.layers import DepthwiseConv2D, AveragePooling2D, GlobalAveragePooling2D
 
+from tensorflow.keras.losses import BinaryCrossentropy
 from tensorflow.keras.optimizers import Adadelta, Adam
 from tensorflow.keras.regularizers import l2
 
@@ -51,7 +52,9 @@ def make_model(x, y, z=1):
     model.add(Dropout(0.5))
     model.add(Dense(2, activation='softmax'))
     model.compile(
-        loss='binary_crossentropy',
+        loss=BinaryCrossentropy(
+            from_logits=True
+        ),
         optimizer=Adam(learning_rate=3e-4),
         # optimizer=Adadelta(
         #     learning_rate=1.0, rho=0.9999, epsilon=1e-08, decay=0.
