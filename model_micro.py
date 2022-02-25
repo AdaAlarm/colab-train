@@ -6,7 +6,6 @@ from tensorflow.keras.layers import InputLayer, Conv2D, MaxPooling2D, Lambda, Ba
 from tensorflow.keras.layers import DepthwiseConv2D, AveragePooling2D, GlobalAveragePooling2D
 
 from tensorflow.keras.optimizers import Adadelta, Adam
-from tensorflow.keras.losses import BinaryCrossentropy
 from tensorflow.keras.regularizers import l2
 
 
@@ -42,7 +41,6 @@ def make_model(x, y, z=1):
         model.add(BatchNormalization())
         model.add(Activation('relu'))
         model.add(MaxPooling2D(pool_size=pool_size))#, padding="same"))
-        model.add(Dropout(0.5))
 
     #model.add(MaxPooling2D(pool_size=pool_size))
     #model.add(AveragePooling2D(pool_size=pool_size))
@@ -50,7 +48,7 @@ def make_model(x, y, z=1):
     model.add(Flatten())
 
     #model.add(Dense(fully_connected, activation='softmax'))
-    #model.add(Dropout(0.5))
+    model.add(Dropout(0.5))
     model.add(Dense(2, activation='softmax'))
     model.compile(
         loss='binary_crossentropy',
