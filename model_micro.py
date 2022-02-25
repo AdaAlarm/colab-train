@@ -22,13 +22,13 @@ def make_model(x, y, z=1):
     model.add(InputLayer(input_shape=(x, y, z)))
     
     #for layer in range(nb_layers-1):
-    # model.add(Conv2D(
-    #     nb_filters,
-    #     kernel_size=kernel_size
-    # ))
-    # model.add(BatchNormalization())
-    # model.add(Activation('relu'))
-    # model.add(Dropout(0.5))
+    model.add(Conv2D(
+        nb_filters,
+        kernel_size=kernel_size
+    ))
+    model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    model.add(Dropout(0.5))
 
     for layer in range(nb_layers):
         model.add(Conv2D(
@@ -50,7 +50,7 @@ def make_model(x, y, z=1):
     model.add(Flatten())
 
     #model.add(Dense(fully_connected, activation='softmax'))
-    model.add(Dropout(0.5))
+    #model.add(Dropout(0.5))
     model.add(Dense(2, activation='softmax'))
     model.compile(
         loss='binary_crossentropy',
