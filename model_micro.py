@@ -42,6 +42,7 @@ def make_model(x, y, z=1):
         model.add(BatchNormalization())
         model.add(Activation('relu'))
         model.add(MaxPooling2D(pool_size=pool_size))#, padding="same"))
+        model.add(Dropout(0.5))
 
     #model.add(MaxPooling2D(pool_size=pool_size))
     #model.add(AveragePooling2D(pool_size=pool_size))
@@ -52,9 +53,7 @@ def make_model(x, y, z=1):
     model.add(Dropout(0.5))
     model.add(Dense(2, activation='softmax'))
     model.compile(
-        loss=BinaryCrossentropy(
-            from_logits=True
-        ),
+        loss='binary_crossentropy',
         optimizer=Adam(learning_rate=3e-4),
         # optimizer=Adadelta(
         #     learning_rate=1.0, rho=0.9999, epsilon=1e-08, decay=0.
