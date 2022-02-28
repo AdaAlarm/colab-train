@@ -11,7 +11,7 @@ from tensorflow.keras.regularizers import l2
 from tensorflow.keras.optimizers import Adadelta, Adam
 
 def make_model(x, y, z=1):
-    filters = 64
+    filters = 32
     weight_decay = 1e-4
     regularizer = l2(weight_decay)
     final_pool_size = (int(x/2), int(y/2))
@@ -58,10 +58,9 @@ def make_model(x, y, z=1):
     x = Activation('relu')(x)
 
     # Reduce size and apply final softmax
-    x = Dropout(rate=0.4)(x)
-
     x = AveragePooling2D(pool_size=final_pool_size)(x)
     x = Flatten()(x)
+    x = Dropout(rate=0.4)(x)
     outputs = Dense(2, activation='softmax')(x)
 
     # Instantiate model.
@@ -80,5 +79,5 @@ def make_model(x, y, z=1):
 
 
 if __name__ == "__main__":
-    model = make_model(16, 25)
+    model = make_model(21, 25)
     model.summary()

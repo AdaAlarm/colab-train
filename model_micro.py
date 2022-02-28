@@ -63,5 +63,5 @@ def make_model(x, y, z=1):
 
 
 if __name__ == "__main__":
-    model = make_model(16, 25)
+    model = make_model(21, 25)
     model.summary()
