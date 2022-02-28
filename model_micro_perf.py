@@ -11,7 +11,7 @@ from tensorflow.keras.regularizers import l2
 from tensorflow.keras.optimizers import Adadelta, Adam
 
 def make_model(x, y, z=1):
-    filters = 42
+    filters = 52
     weight_decay = 1e-4
     regularizer = l2(weight_decay)
     final_pool_size = (int(x/2), int(y/2))
@@ -22,7 +22,7 @@ def make_model(x, y, z=1):
     x = Conv2D(filters, (10,4), strides=(2,2), padding='same', kernel_regularizer=regularizer)(inputs)
     x = BatchNormalization()(x)
     x = Activation('relu')(x)
-    x = Dropout(rate=0.2)(x)
+    x = Dropout(rate=0.4)(x)
 
     # First layer of separable depthwise conv2d
     # Separable consists of depthwise conv2d followed by conv2d with 1x1 kernels
@@ -49,13 +49,13 @@ def make_model(x, y, z=1):
     x = BatchNormalization()(x)
     x = Activation('relu')(x)
 
-    # Fourth layer of separable depthwise conv2d
-    x = DepthwiseConv2D(depth_multiplier=1, kernel_size=(3,3), padding='same', kernel_regularizer=regularizer)(x)
-    x = BatchNormalization()(x)
-    x = Activation('relu')(x)
-    x = Conv2D(filters, (1,1), padding='same', kernel_regularizer=regularizer)(x)
-    x = BatchNormalization()(x)
-    x = Activation('relu')(x)
+    # # Fourth layer of separable depthwise conv2d
+    # x = DepthwiseConv2D(depth_multiplier=1, kernel_size=(3,3), padding='same', kernel_regularizer=regularizer)(x)
+    # x = BatchNormalization()(x)
+    # x = Activation('relu')(x)
+    # x = Conv2D(filters, (1,1), padding='same', kernel_regularizer=regularizer)(x)
+    # x = BatchNormalization()(x)
+    # x = Activation('relu')(x)
 
     # Reduce size and apply final softmax
     x = AveragePooling2D(pool_size=final_pool_size)(x)
