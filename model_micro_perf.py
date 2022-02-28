@@ -11,7 +11,7 @@ from tensorflow.keras.regularizers import l2
 from tensorflow.keras.optimizers import Adadelta, Adam
 
 def make_model(x, y, z=1):
-    filters = 32
+    filters = 42
     weight_decay = 1e-4
     regularizer = l2(weight_decay)
     final_pool_size = (int(x/2), int(y/2))
