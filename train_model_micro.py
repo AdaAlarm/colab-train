@@ -1,4 +1,4 @@
-from model_micro_perf import make_model
+from model_micro import make_model
 import joblib
 from preprocess_micro import make_data
 from conf import default_conf
