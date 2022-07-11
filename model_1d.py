@@ -94,3 +94,4 @@ def make_model(raw_size):
 
 if __name__ == "__main__":
     model = make_model(16000)
+    model.summary()
