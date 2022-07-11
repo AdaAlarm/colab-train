@@ -16,13 +16,13 @@ def extract_features(inputs):
     inputs = tf.cast(inputs, tf.float32)
 
     # A 1024-point STFT with frames of 64 ms and 75% overlap.
-    stfts = tf.signal.stft(inputs, frame_length=1024, frame_step=55, fft_length=1024)
+    stfts = tf.signal.stft(inputs, frame_length=1024, frame_step=256, fft_length=1024)
     spectrograms = tf.abs(stfts)
 
     # Warp the linear scale spectrograms into the mel-scale.
     num_spectrogram_bins = stfts.shape[-1]
     #lower_edge_hertz, upper_edge_hertz, num_mel_bins = 125.0, 7500.0, 60
-    lower_edge_hertz, upper_edge_hertz, num_mel_bins = 125.0, 7500.0, 25
+    lower_edge_hertz, upper_edge_hertz, num_mel_bins = 80.0, 7600.0, 80
     linear_to_mel_weight_matrix = tf.signal.linear_to_mel_weight_matrix(num_mel_bins, num_spectrogram_bins, sample_rate, lower_edge_hertz, upper_edge_hertz)
     mel_spectrograms = tf.tensordot(spectrograms, linear_to_mel_weight_matrix, 1)
     mel_spectrograms.set_shape(spectrograms.shape[:-1].concatenate(linear_to_mel_weight_matrix.shape[-1:]))
@@ -33,7 +33,8 @@ def extract_features(inputs):
     # Compute MFCCs from log_mel_spectrograms
     mfccs = tf.signal.mfccs_from_log_mel_spectrograms(log_mel_spectrograms)
     
-    return log_mel_spectrograms
+    # take the first 25
+    return log_mel_spectrograms[..., :25]
 
 
 def make_model(raw_size):
