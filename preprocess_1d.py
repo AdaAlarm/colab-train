@@ -71,3 +71,28 @@ def get_data(sample=False):
     y = np.array([d["y"] for d in data])
 
     return X, y, [d["path"] for d in data]
+
+
+def return_train_test(split_ratio, X, y, files):
+    random_state = 42
+
+    X_train, X_test, y_train, y_test, paths_train, paths_test = train_test_split(
+        X, y, files,
+        test_size=(1 - split_ratio),
+        random_state=random_state,
+        shuffle=True
+    )
+
+    return X_train, X_test, y_train, y_test, paths_train, paths_test
+
+
+def get_train_test(split_ratio=0.8, sample=False):
+    X, y, files = get_data(
+        sample=sample
+    )
+
+    assert X.shape[0] == len(y)
+
+    return return_train_test(split_ratio, X, y, files)
+
+
