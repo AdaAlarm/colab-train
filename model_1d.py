@@ -21,7 +21,7 @@ def extract_features(inputs):
 
     # Warp the linear scale spectrograms into the mel-scale.
     num_spectrogram_bins = stfts.shape[-1]
-    lower_edge_hertz, upper_edge_hertz, num_mel_bins = 125.0, 7500.0, 60
+    lower_edge_hertz, upper_edge_hertz, num_mel_bins = 125.0, 7500.0, 64
     linear_to_mel_weight_matrix = tf.signal.linear_to_mel_weight_matrix(num_mel_bins, num_spectrogram_bins, sample_rate, lower_edge_hertz, upper_edge_hertz)
     mel_spectrograms = tf.tensordot(spectrograms, linear_to_mel_weight_matrix, 1)
     mel_spectrograms.set_shape(spectrograms.shape[:-1].concatenate(linear_to_mel_weight_matrix.shape[-1:]))
@@ -37,7 +37,7 @@ def extract_features(inputs):
 
 def make_model(raw_size):
 
-    nb_filters = 75  # number of convolutional filters to use
+    nb_filters = 64  # number of convolutional filters to use
     kernel_size = 3  # convolution kernel size
     pool_size = 2  # size of pooling area for max pooling
 
@@ -94,3 +94,4 @@ def make_model(raw_size):
 
 if __name__ == "__main__":
     model = make_model(16000)
+    model.summary()

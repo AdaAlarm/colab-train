@@ -8,10 +8,13 @@ def train_evaluate(config=default_conf, save_model=False):
 
     dx = 16000
 
+    #epochs = config["epochs"]
+    epochs = 250
+
     model = make_model(dx)
     model.fit(
         X_train, y_train,
-        batch_size=256, epochs=config["epochs"], verbose=1,
+        batch_size=256, epochs=epochs, verbose=1,
         validation_data=(X_test, y_test),
         shuffle=True
     )
