@@ -1,10 +1,10 @@
 from model_1d import make_model
 import joblib
-from preprocess_micro import make_data
+from preprocess_1d import make_data
 from conf import default_conf
 
 def train_evaluate(config=default_conf, save_model=False):
-    (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
+    (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data()
 
     dx = 16000
 
