@@ -21,9 +21,9 @@ def train_evaluate(config=default_conf, save_model=False):
     if save_model:
         print('Test score:', score[0])
         print('Test accuracy:', score[1])
-        model.save_weights("colab-train/data/micro_1d.h5")
+        model.save_weights("colab-train/data/1d_model.h5")
 
-    return score, (dx,dy)
+    return score, dx
 
 
 if __name__ == '__main__':
