@@ -16,13 +16,13 @@ def extract_features(inputs):
     inputs = tf.cast(inputs, tf.float32)
 
     # A 1024-point STFT with frames of 64 ms and 75% overlap.
-    stfts = tf.signal.stft(inputs, frame_length=1024, frame_step=64, fft_length=1024)
+    stfts = tf.signal.stft(inputs, frame_length=1024, frame_step=55, fft_length=1024)
     spectrograms = tf.abs(stfts)
 
     # Warp the linear scale spectrograms into the mel-scale.
     num_spectrogram_bins = stfts.shape[-1]
     #lower_edge_hertz, upper_edge_hertz, num_mel_bins = 125.0, 7500.0, 60
-    lower_edge_hertz, upper_edge_hertz, num_mel_bins = 75.0, 8000.0, 60
+    lower_edge_hertz, upper_edge_hertz, num_mel_bins = 125.0, 7500.0, 25
     linear_to_mel_weight_matrix = tf.signal.linear_to_mel_weight_matrix(num_mel_bins, num_spectrogram_bins, sample_rate, lower_edge_hertz, upper_edge_hertz)
     mel_spectrograms = tf.tensordot(spectrograms, linear_to_mel_weight_matrix, 1)
     mel_spectrograms.set_shape(spectrograms.shape[:-1].concatenate(linear_to_mel_weight_matrix.shape[-1:]))
