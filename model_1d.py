@@ -33,8 +33,8 @@ def extract_features(inputs):
     # Compute MFCCs from log_mel_spectrograms
     mfccs = tf.signal.mfccs_from_log_mel_spectrograms(log_mel_spectrograms)
     
-    # take the first 25
-    return log_mel_spectrograms[..., :25]
+    # take the first 64
+    return log_mel_spectrograms[..., :64]
 
 
 def make_model(raw_size):
