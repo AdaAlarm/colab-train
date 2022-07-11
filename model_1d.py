@@ -55,7 +55,7 @@ def make_model(raw_size):
     model.add(Conv1D(
         nb_filters,
         kernel_size=kernel_size,
-        #kernel_regularizer=regularizer,
+        kernel_regularizer=regularizer,
         activation='relu',
         use_bias=False
     ))
@@ -67,7 +67,7 @@ def make_model(raw_size):
         model.add(Conv1D(
             nb_filters,
             kernel_size=kernel_size,
-            #kernel_regularizer=regularizer,
+            kernel_regularizer=regularizer,
             use_bias=False
         ))
         model.add(BatchNormalization(axis=1, fused=False))
@@ -76,7 +76,7 @@ def make_model(raw_size):
         model.add(Dropout(0.5))
 
     model.add(Flatten())
-    model.add(Dense(nb_filters, activation='relu'))
+    model.add(Dense(nb_filters * nb_layers * pool_size, activation='relu'))
     model.add(Dropout(0.5))
     model.add(Dense(2, activation='softmax'))
     model.compile(
