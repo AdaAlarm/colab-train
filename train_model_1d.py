@@ -4,7 +4,7 @@ from preprocess_1d import get_train_test
 from conf import default_conf
 
 def train_evaluate(config=default_conf, save_model=False):
-    (X_train, X_test, y_train, y_test, paths_train, paths_test) = get_train_test()
+    (X_train, X_test, y_train, y_test, paths_train, paths_test) = get_train_test(split_ratio=.95)
 
     dx = 16000
 
