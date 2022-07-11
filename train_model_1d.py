@@ -1,6 +1,6 @@
 from model_1d import make_model
 import joblib
-from preprocess_1d import make_data
+from preprocess_1d import get_train_test
 from conf import default_conf
 
 def train_evaluate(config=default_conf, save_model=False):
