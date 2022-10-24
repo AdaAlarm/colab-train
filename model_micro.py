@@ -8,6 +8,12 @@ from tensorflow.keras.layers import DepthwiseConv2D, AveragePooling2D, GlobalAve
 from tensorflow.keras.optimizers import Adadelta, Adam
 from tensorflow.keras.regularizers import l2
 
+from tensorflow_model_optimization.sparsity import keras as sparsity
+
+pruning_schedule = sparsity.PolynomialDecay(
+    initial_sparsity=0.0, final_sparsity=0.5,
+    begin_step=1000, end_step=5000
+)
 
 def make_model(x, y, z=1):
     nb_filters = 24  # number of convolutional filters to use
@@ -21,10 +27,15 @@ def make_model(x, y, z=1):
     model.add(InputLayer(input_shape=(x, y, z)))
     
     #for layer in range(nb_layers-1):
-    model.add(Conv2D(
-        nb_filters,
-        kernel_size=kernel_size
-    ))
+    model.add(
+        sparsity.prune_low_magnitude(
+            Conv2D(
+                nb_filters,
+                kernel_size=kernel_size
+            ),
+            pruning_schedule=pruning_schedule
+        )
+    )
     model.add(BatchNormalization())
     model.add(Activation('relu'))
     model.add(Dropout(0.5))
@@ -60,7 +71,7 @@ def make_model(x, y, z=1):
         metrics=['accuracy']
     )
 
-    return model
+    return model_for_pruning
 
 
 if __name__ == "__main__":

@@ -4,23 +4,7 @@ from preprocess_micro import make_data
 from conf import default_conf
 
 from tensorflow_model_optimization.sparsity import keras as sparsity
-import tensorflow as tf
-from tensorflow.keras.optimizers import Adadelta, Adam
 
-pruning_params = {
-    'pruning_schedule': sparsity.PolynomialDecay(
-        initial_sparsity=0.50,
-        final_sparsity=0.80,
-        begin_step=0,
-        end_step=200
-    ),
-    'block_size': [1, 16]
-}
-
-def apply_pruning_to_dense(layer):
-    if isinstance(layer, tf.keras.layers.Dense):
-        return sparsity.prune_low_magnitude(layer, **pruning_params)
-    return layer
 
 def train_evaluate(config=default_conf, save_model=False):
     (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
@@ -35,56 +19,21 @@ def train_evaluate(config=default_conf, save_model=False):
     model = make_model(dx, dy)
     model.fit(
         X_train, y_train,
-        batch_size=256, epochs=config["epochs"],
-        verbose=1,
-        validation_split=config['split_ratio'],
-        shuffle=True
-    )
-    #model.summary()
-    score = model.evaluate(X_test, y_test, verbose=0)
-    print('Test score:', score[0])
-    print('Test accuracy:', score[1])
-
-    #model.save_weights("colab-train/data/micro_model.h5")
-    tf.keras.models.save_model(
-        model, "colab-train/data/micro_model.h5",
-        include_optimizer=False
-    )
-
-    # now prune
-    model_for_pruning = tf.keras.models.clone_model(
-        model,
-        clone_function=apply_pruning_to_dense,
-    )
-
-    # `prune_low_magnitude` requires a recompile.
-    model_for_pruning.compile(
-        loss='binary_crossentropy',
-        optimizer=Adam(learning_rate=3e-4),
-        metrics=['accuracy']
-    )
-
-    model_for_pruning.fit(
-        X_train, y_train,
-        batch_size=256, epochs=config["epochs"],
-        verbose=0,
-        validation_split=config['split_ratio'],
+        batch_size=256, epochs=config["epochs"], verbose=1,
+        validation_data=(X_test, y_test),
+        shuffle=True,
         callbacks=[
             sparsity.UpdatePruningStep(),
             sparsity.PruningSummaries(log_dir="logs/"),
         ]
     )
-
-    score_pruning = model_for_pruning.evaluate(X_test, y_test, verbose=0)
-    print('Test score (prune):', score_pruning[0])
-    print('Test accuracy (prune):', score_pruning[1])
-
-    model_for_export = sparsity.strip_pruning(model_for_pruning)
-    tf.keras.models.save_model(
-        model_for_export,
-        "colab-train/data/micro_model_pruned.h5",
-        include_optimizer=False
-    )
+    #model.summary()
+    score = model.evaluate(X_test, y_test, verbose=0)
+    
+    if save_model:
+        print('Test score:', score[0])
+        print('Test accuracy:', score[1])
+        model.save_weights("colab-train/data/micro_model.h5")
 
     return score, (dx,dy)
 
