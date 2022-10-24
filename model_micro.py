@@ -36,14 +36,18 @@ def make_model(x, y, z=1):
     model.add(Dropout(0.5))
 
     for layer in range(nb_layers):
-        model.add(Conv2D(
-            nb_filters,
-            kernel_size=kernel_size,
-            #activation='softmax',
-            #kernel_regularizer=lr,
-            use_bias=False,
-            padding='same'
-        ))
+        sparsity.prune_low_magnitude(
+            model.add(Conv2D(
+                nb_filters,
+                kernel_size=kernel_size,
+                #activation='softmax',
+                #kernel_regularizer=lr,
+                use_bias=False,
+                padding='same'
+            )),
+            pruning_schedule=pruning_schedule
+        )
+
         model.add(BatchNormalization())
         model.add(Activation('relu'))
         model.add(MaxPooling2D(pool_size=pool_size))#, padding="same"))
@@ -57,11 +61,7 @@ def make_model(x, y, z=1):
     model.add(Dropout(0.5))
     model.add(Dense(2, activation='softmax'))
 
-    model_for_pruning = sparsity.prune_low_magnitude(
-        model, pruning_schedule=pruning_schedule
-    )
-
-    model_for_pruning.compile(
+    model.compile(
         loss='binary_crossentropy',
         optimizer=Adam(learning_rate=3e-4),
         # optimizer=Adadelta(
@@ -70,7 +70,7 @@ def make_model(x, y, z=1):
         metrics=['accuracy']
     )
 
-    return model_for_pruning
+    return model
 
 
 if __name__ == "__main__":
