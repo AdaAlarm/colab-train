@@ -20,8 +20,7 @@ def train_evaluate(config=default_conf, save_model=False):
         X_train, y_train,
         batch_size=256, epochs=config["epochs"], verbose=1,
         validation_data=(X_test, y_test),
-        shuffle=True,
-        use_multiprocessing=False,
+        #shuffle=True,
         callbacks=[
             sparsity.UpdatePruningStep()
         ]
