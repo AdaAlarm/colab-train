@@ -8,6 +8,12 @@ from tensorflow.keras.layers import DepthwiseConv2D, AveragePooling2D, GlobalAve
 from tensorflow.keras.optimizers import Adadelta, Adam
 from tensorflow.keras.regularizers import l2
 
+import tensorflow_model_optimization as tfmot
+
+pruning_schedule = tfmot.sparsity.keras.PolynomialDecay(
+    initial_sparsity=0.0, final_sparsity=0.5,
+    begin_step=1000, end_step=15000
+)
 
 def make_model(x, y, z=1):
     nb_filters = 24  # number of convolutional filters to use
@@ -50,7 +56,12 @@ def make_model(x, y, z=1):
     #model.add(Dense(fully_connected, activation='softmax'))
     model.add(Dropout(0.5))
     model.add(Dense(2, activation='softmax'))
-    model.compile(
+
+    model_for_pruning = tfmot.sparsity.keras.prune_low_magnitude(
+        model, pruning_schedule=pruning_schedule
+    )
+
+    model_for_pruning.compile(
         loss='binary_crossentropy',
         optimizer=Adam(learning_rate=3e-4),
         # optimizer=Adadelta(
@@ -59,7 +70,7 @@ def make_model(x, y, z=1):
         metrics=['accuracy']
     )
 
-    return model
+    return model_for_pruning
 
 
 if __name__ == "__main__":
