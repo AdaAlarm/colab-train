@@ -71,7 +71,7 @@ def make_model(x, y, z=1):
         metrics=['accuracy']
     )
 
-    return model_for_pruning
+    return model
 
 
 if __name__ == "__main__":
