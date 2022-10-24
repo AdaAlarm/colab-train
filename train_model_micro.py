@@ -5,7 +5,7 @@ from conf import default_conf
 
 from tensorflow_model_optimization.sparsity import keras as sparsity
 import tensorflow as tf
-
+from tensorflow.keras.optimizers import Adadelta, Adam
 
 
 pruning_schedule = sparsity.PolynomialDecay(
