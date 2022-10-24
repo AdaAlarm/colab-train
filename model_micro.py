@@ -26,7 +26,7 @@ def make_model(x, y, z=1):
         kernel_size=kernel_size
     ))
     model.add(BatchNormalization())
-    model.add(Activation('softmax'))
+    model.add(Activation('relu'))
     model.add(Dropout(0.5))
 
     for layer in range(nb_layers):
@@ -39,7 +39,7 @@ def make_model(x, y, z=1):
             padding='same'
         ))
         model.add(BatchNormalization())
-        model.add(Activation('softmax'))
+        model.add(Activation('relu'))
         model.add(MaxPooling2D(pool_size=pool_size))#, padding="same"))
 
     #model.add(MaxPooling2D(pool_size=pool_size))
