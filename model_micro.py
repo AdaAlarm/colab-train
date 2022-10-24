@@ -36,16 +36,18 @@ def make_model(x, y, z=1):
     model.add(Dropout(0.5))
 
     for layer in range(nb_layers):
-        sparsity.prune_low_magnitude(
-            model.add(Conv2D(
-                nb_filters,
-                kernel_size=kernel_size,
-                #activation='softmax',
-                #kernel_regularizer=lr,
-                use_bias=False,
-                padding='same'
-            )),
-            pruning_schedule=pruning_schedule
+        model.add(
+            sparsity.prune_low_magnitude(
+                Conv2D(
+                    nb_filters,
+                    kernel_size=kernel_size,
+                    #activation='softmax',
+                    #kernel_regularizer=lr,
+                    use_bias=False,
+                    padding='same'
+                ),
+                pruning_schedule=pruning_schedule
+            )
         )
 
         model.add(BatchNormalization())
