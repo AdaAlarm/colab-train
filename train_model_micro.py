@@ -18,12 +18,14 @@ def train_evaluate(config=default_conf, save_model=False):
     model = make_model(dx, dy)
     model.fit(
         X_train, y_train,
-        batch_size=256, epochs=config["epochs"], verbose=1,
-        validation_data=(X_test, y_test),
-        #shuffle=True,
         callbacks=[
             sparsity.UpdatePruningStep()
-        ]
+        ],
+        batch_size=256,
+        epochs=config["epochs"],
+        verbose=1,
+        validation_data=(X_test, y_test)
+        #shuffle=True,
     )
     #model.summary()
     score = model.evaluate(X_test, y_test, verbose=0)
