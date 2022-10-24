@@ -8,9 +8,9 @@ from tensorflow.keras.layers import DepthwiseConv2D, AveragePooling2D, GlobalAve
 from tensorflow.keras.optimizers import Adadelta, Adam
 from tensorflow.keras.regularizers import l2
 
-import tensorflow_model_optimization as tfmot
+from tensorflow_model_optimization.sparsity import keras as sparsity
 
-pruning_schedule = tfmot.sparsity.keras.PolynomialDecay(
+pruning_schedule = sparsity.PolynomialDecay(
     initial_sparsity=0.0, final_sparsity=0.5,
     begin_step=1000, end_step=15000
 )
@@ -57,7 +57,7 @@ def make_model(x, y, z=1):
     model.add(Dropout(0.5))
     model.add(Dense(2, activation='softmax'))
 
-    model_for_pruning = tfmot.sparsity.keras.prune_low_magnitude(
+    model_for_pruning = sparsity.prune_low_magnitude(
         model, pruning_schedule=pruning_schedule
     )
 
