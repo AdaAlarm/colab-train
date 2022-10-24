@@ -10,7 +10,7 @@ from tensorflow.keras.optimizers import Adadelta, Adam
 
 pruning_schedule = sparsity.PolynomialDecay(
     initial_sparsity=0.0, final_sparsity=0.5,
-    begin_step=1000, end_step=15000
+    begin_step=0, end_step=2
 )
 
 def train_evaluate(config=default_conf, save_model=False):
