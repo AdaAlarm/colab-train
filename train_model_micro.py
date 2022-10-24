@@ -7,12 +7,13 @@ from tensorflow_model_optimization.sparsity import keras as sparsity
 import tensorflow as tf
 from tensorflow.keras.optimizers import Adadelta, Adam
 
-
 pruning_params = {
-      'pruning_schedule': tfmot.sparsity.keras.PolynomialDecay(initial_sparsity=0.50,
-                                                               final_sparsity=0.80,
-                                                               begin_step=0,
-                                                               end_step=200)
+    'pruning_schedule': sparsity.PolynomialDecay(
+        initial_sparsity=0.50,
+        final_sparsity=0.80,
+        begin_step=0,
+        end_step=200
+    )
 }
 
 def train_evaluate(config=default_conf, save_model=False):
