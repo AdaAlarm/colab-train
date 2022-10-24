@@ -10,10 +10,12 @@ from tensorflow.keras.regularizers import l2
 
 from tensorflow_model_optimization.sparsity import keras as sparsity
 
-pruning_schedule = sparsity.PolynomialDecay(
-    initial_sparsity=0.0, final_sparsity=0.5,
-    begin_step=1000, end_step=5000
+pruning_schedule = sparsity.ConstantSparsity(
+    target_sparsity=0.5,
+    begin_step=0,
+    frequency=100
 )
+
 
 def make_model(x, y, z=1):
     nb_filters = 24  # number of convolutional filters to use
