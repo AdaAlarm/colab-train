@@ -3,6 +3,8 @@ import joblib
 from preprocess_micro import make_data
 from conf import default_conf
 
+import tensorflow_model_optimization as tfmot
+
 def train_evaluate(config=default_conf, save_model=False):
     (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
 
@@ -18,7 +20,8 @@ def train_evaluate(config=default_conf, save_model=False):
         X_train, y_train,
         batch_size=256, epochs=config["epochs"], verbose=1,
         validation_data=(X_test, y_test),
-        shuffle=True
+        shuffle=True,
+        callbacks=[tfmot.sparsity.keras.UpdatePruningStep()]
     )
     #model.summary()
     score = model.evaluate(X_test, y_test, verbose=0)
