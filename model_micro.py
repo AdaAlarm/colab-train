@@ -30,12 +30,9 @@ def make_model(x, y, z=1):
     
     #for layer in range(nb_layers-1):
     model.add(
-        sparsity.prune_low_magnitude(
-            Conv2D(
-                nb_filters,
-                kernel_size=kernel_size
-            ),
-            pruning_schedule=pruning_schedule
+        Conv2D(
+            nb_filters,
+            kernel_size=kernel_size
         )
     )
     model.add(BatchNormalization())
@@ -43,14 +40,19 @@ def make_model(x, y, z=1):
     model.add(Dropout(0.5))
 
     for layer in range(nb_layers):
-        model.add(Conv2D(
-            nb_filters,
-            kernel_size=kernel_size,
-            #activation='softmax',
-            #kernel_regularizer=lr,
-            use_bias=False,
-            padding='same'
-        ))
+        model.add(
+            sparsity.prune_low_magnitude(
+                Conv2D(
+                    nb_filters,
+                    kernel_size=kernel_size,
+                    #activation='softmax',
+                    #kernel_regularizer=lr,
+                    use_bias=False,
+                    padding='same'
+                ),
+                pruning_schedule=pruning_schedule
+            )
+        )
         model.add(BatchNormalization())
         model.add(Activation('relu'))
         model.add(MaxPooling2D(pool_size=pool_size))#, padding="same"))
