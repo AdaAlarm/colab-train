@@ -8,10 +8,12 @@ import tensorflow as tf
 from tensorflow.keras.optimizers import Adadelta, Adam
 
 
-pruning_schedule = sparsity.PolynomialDecay(
-    initial_sparsity=0.0, final_sparsity=0.5,
-    begin_step=0, end_step=2
-)
+pruning_params = {
+      'pruning_schedule': tfmot.sparsity.keras.PolynomialDecay(initial_sparsity=0.50,
+                                                               final_sparsity=0.80,
+                                                               begin_step=0,
+                                                               end_step=200)
+}
 
 def train_evaluate(config=default_conf, save_model=False):
     (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
@@ -26,8 +28,9 @@ def train_evaluate(config=default_conf, save_model=False):
     model = make_model(dx, dy)
     model.fit(
         X_train, y_train,
-        batch_size=256, epochs=config["epochs"], verbose=1,
-        validation_data=(X_test, y_test),
+        batch_size=256, epochs=config["epochs"],
+        verbose=1,
+        validation_split=config['split_ratio'],
         shuffle=True
     )
     #model.summary()
@@ -43,23 +46,21 @@ def train_evaluate(config=default_conf, save_model=False):
 
     # now prune
     model_for_pruning = sparsity.prune_low_magnitude(
-        model, pruning_schedule=pruning_schedule
+        model, **pruning_params
     )
 
+    # `prune_low_magnitude` requires a recompile.
     model_for_pruning.compile(
         loss='binary_crossentropy',
         optimizer=Adam(learning_rate=3e-4),
-        # optimizer=Adadelta(
-        #     learning_rate=1.0, rho=0.9999, epsilon=1e-08, decay=0.
-        # ),
         metrics=['accuracy']
     )
 
     model_for_pruning.fit(
         X_train, y_train,
-        batch_size=256, epochs=config["epochs"], verbose=0,
-        validation_data=(X_test, y_test),
-        shuffle=True,
+        batch_size=256, epochs=config["epochs"],
+        verbose=0,
+        validation_split=config['split_ratio'],
         callbacks=[
             sparsity.UpdatePruningStep(),
             sparsity.PruningSummaries(log_dir="logs/"),
