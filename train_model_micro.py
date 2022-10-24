@@ -22,7 +22,10 @@ def train_evaluate(config=default_conf, save_model=False):
         batch_size=256, epochs=config["epochs"], verbose=1,
         validation_data=(X_test, y_test),
         shuffle=True,
-        callbacks=[sparsity.UpdatePruningStep()]
+        callbacks=[
+            sparsity.UpdatePruningStep(),
+            sparsity.PruningSummaries(log_dir="logs/"),
+        ]
     )
     #model.summary()
     score = model.evaluate(X_test, y_test, verbose=0)
