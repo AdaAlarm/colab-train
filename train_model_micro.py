@@ -71,7 +71,7 @@ def train_evaluate(config=default_conf, save_model=False):
     print('Test score (prune):', score_pruning[0])
     print('Test accuracy (prune):', score_pruning[1])
 
-    model_for_export = tfmot.sparsity.keras.strip_pruning(model_for_pruning)
+    model_for_export = sparsity.strip_pruning(model_for_pruning)
     tf.keras.models.save_model(
         model_for_export,
         "colab-train/data/micro_model_pruned.h5",
