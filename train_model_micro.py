@@ -13,8 +13,14 @@ pruning_params = {
         final_sparsity=0.80,
         begin_step=0,
         end_step=200
-    )
+    ),
+    'block_size': [1, 16]
 }
+
+def apply_pruning_to_dense(layer):
+    if isinstance(layer, tf.keras.layers.Dense):
+        return sparsity.prune_low_magnitude(layer, **pruning_params)
+    return layer
 
 def train_evaluate(config=default_conf, save_model=False):
     (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
@@ -46,8 +52,9 @@ def train_evaluate(config=default_conf, save_model=False):
     )
 
     # now prune
-    model_for_pruning = sparsity.prune_low_magnitude(
-        model, **pruning_params
+    model_for_pruning = tf.keras.models.clone_model(
+        model,
+        clone_function=apply_pruning_to_dense,
     )
 
     # `prune_low_magnitude` requires a recompile.
