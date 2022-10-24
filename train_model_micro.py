@@ -22,9 +22,9 @@ def train_evaluate(config=default_conf, save_model=False):
         batch_size=256, epochs=config["epochs"], verbose=1,
         validation_data=(X_test, y_test),
         shuffle=True,
+        use_multiprocessing=False,
         callbacks=[
-            sparsity.UpdatePruningStep(),
-            sparsity.PruningSummaries(log_dir="logs/"),
+            sparsity.UpdatePruningStep()
         ]
     )
     #model.summary()
