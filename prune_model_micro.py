@@ -31,7 +31,7 @@ def train_evaluate(config=default_conf, save_model=False):
     print('Test accuracy:', score[1])
 
     if save_model:
-        model.save_weights("colab-train/data/micro_model.h5")
+        tf.keras.models.save_model(model, "colab-train/data/micro_model.h5")
 
     return score, (dx,dy)
 
