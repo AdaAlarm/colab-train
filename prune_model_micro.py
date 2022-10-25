@@ -22,7 +22,7 @@ def train_evaluate(config=default_conf, save_model=False):
     model.load_weights("colab-train/data/micro_model.h5")
 
     model_for_pruning = tfmot.sparsity.keras.prune_low_magnitude(model)
-    model_for_pruning.summary()
+    #model_for_pruning.summary()
 
     log_dir = "logs/"
     callbacks = [
@@ -32,7 +32,7 @@ def train_evaluate(config=default_conf, save_model=False):
     ]
 
     model_for_pruning.compile(
-        loss=tf.keras.losses.binary_crossentropy,
+        loss=tf.keras.losses.categorical_crossentropy,
         optimizer='adam',
         metrics=['accuracy']
     )
