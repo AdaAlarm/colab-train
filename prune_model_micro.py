@@ -4,8 +4,11 @@ from preprocess_micro import make_data
 from conf import default_conf
 
 import tensorflow as tf
+import tensorflow_model_optimization as tfmot
+
 
 def train_evaluate(config=default_conf, save_model=False):
+    # this should be faster than training, because data already is preprocessed
     (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
 
     dx, dy, dz = X_train.shape[1], X_train.shape[2], 1
@@ -16,22 +19,37 @@ def train_evaluate(config=default_conf, save_model=False):
     X_test = X_test.reshape((X_test.shape[0], dx, dy, dz))
 
     model = make_model(dx, dy)
-    model.fit(
+    model.load_weights("colab-train/data/micro_model.h5")
+
+    model_for_pruning = tfmot.sparsity.keras.prune_low_magnitude(base_model)
+    model_for_pruning.summary()
+
+    log_dir = "logs/"
+    callbacks = [
+        tfmot.sparsity.keras.UpdatePruningStep(),
+        # Log sparsity and other metrics in Tensorboard.
+        tfmot.sparsity.keras.PruningSummaries(log_dir=log_dir)
+    ]
+
+    model_for_pruning.compile(
+        loss=tf.keras.losses.BinaryCrossentropy,
+        optimizer='adam',
+        metrics=['accuracy']
+    )
+
+    model_for_pruning.fit(
         X_train, y_train,
-        batch_size=256,
-        epochs=config["epochs"],
-        verbose=1,
-        validation_split=1.0-config["split_ratio"]
-        #shuffle=True,
+        callbacks=callbacks,
+        epochs=2,
     )
     #model.summary()
-    score = model.evaluate(X_test, y_test, verbose=0)
+    score = model_for_pruning.evaluate(X_test, y_test, verbose=0)
 
     print('Test score:', score[0])
     print('Test accuracy:', score[1])
 
     if save_model:
-        tf.keras.models.save_model(model, "colab-train/data/micro_model.h5")
+        model_for_pruning.save("colab-train/data/micro_model_pruned.h5", include_optimizer=True)
 
     return score, (dx,dy)
 
