@@ -6,6 +6,8 @@ from conf import default_conf
 import tensorflow as tf
 import tensorflow_model_optimization as tfmot
 
+from tensorflow.keras.optimizers import Adadelta, Adam
+
 
 def train_evaluate(config=default_conf, save_model=False):
     # this should be faster than training, because data already is preprocessed
@@ -31,16 +33,16 @@ def train_evaluate(config=default_conf, save_model=False):
         tfmot.sparsity.keras.PruningSummaries(log_dir=log_dir)
     ]
 
-    model_for_pruning.compile(
-        loss=tf.keras.losses.categorical_crossentropy,
-        optimizer='adam',
+    model.compile(
+        loss='binary_crossentropy',
+        optimizer=Adam(learning_rate=3e-4),
         metrics=['accuracy']
     )
 
     model_for_pruning.fit(
         X_train, y_train,
         callbacks=callbacks,
-        epochs=2,
+        epochs=config['epochs'],
     )
     #model.summary()
     score = model_for_pruning.evaluate(X_test, y_test, verbose=0)
