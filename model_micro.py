@@ -11,7 +11,8 @@ from tensorflow.keras.regularizers import l2
 def make_model(x, y, z=1):
     model = tf.keras.Sequential([
       tf.keras.layers.Dense(20, input_shape=(x, y, z)),
-      tf.keras.layers.Flatten()
+      tf.keras.layers.Flatten(),
+      tf.keras.layers.Dense(2)
     ])
     model.compile(
       loss=tf.keras.losses.categorical_crossentropy,
