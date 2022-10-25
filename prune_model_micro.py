@@ -33,7 +33,7 @@ def train_evaluate(config=default_conf, save_model=False):
         tfmot.sparsity.keras.PruningSummaries(log_dir=log_dir)
     ]
 
-    model.compile(
+    model_for_pruning.compile(
         loss='binary_crossentropy',
         optimizer=Adam(learning_rate=3e-4),
         metrics=['accuracy']
@@ -44,7 +44,7 @@ def train_evaluate(config=default_conf, save_model=False):
         callbacks=callbacks,
         epochs=config['epochs'],
     )
-    #model.summary()
+    #model_for_pruning.summary()
     score = model_for_pruning.evaluate(X_test, y_test, verbose=0)
 
     print('Test score:', score[0])
