@@ -15,12 +15,9 @@ def make_model(x, y, z=1):
       tf.keras.layers.Dense(2, activation='softmax')
     ])
     model.compile(
-        loss='binary_crossentropy',
-        optimizer="adam",#Adam(learning_rate=3e-4),
-        # optimizer=Adadelta(
-        #     learning_rate=1.0, rho=0.9999, epsilon=1e-08, decay=0.
-        # ),
-        metrics=['accuracy']
+      loss=tf.keras.losses.categorical_crossentropy,
+      optimizer='adam',
+      metrics=['accuracy']
     )
     return model
 
@@ -70,7 +67,7 @@ def make_model1(x, y, z=1):
 
     model.compile(
         loss='binary_crossentropy',
-        optimizer="adam",#Adam(learning_rate=3e-4),
+        optimizer=Adam(learning_rate=3e-4),
         # optimizer=Adadelta(
         #     learning_rate=1.0, rho=0.9999, epsilon=1e-08, decay=0.
         # ),
