@@ -8,15 +8,6 @@ from tensorflow.keras.layers import DepthwiseConv2D, AveragePooling2D, GlobalAve
 from tensorflow.keras.optimizers import Adadelta, Adam
 from tensorflow.keras.regularizers import l2
 
-from tensorflow_model_optimization.sparsity import keras as sparsity
-
-pruning_schedule = sparsity.ConstantSparsity(
-    target_sparsity=0.5,
-    begin_step=0,
-    frequency=100
-)
-
-
 def make_model(x, y, z=1):
     nb_filters = 24  # number of convolutional filters to use
     kernel_size = (2, 2)  # convolution kernel size
@@ -40,19 +31,14 @@ def make_model(x, y, z=1):
     model.add(Dropout(0.5))
 
     for layer in range(nb_layers):
-        model.add(
-            sparsity.prune_low_magnitude(
-                Conv2D(
-                    nb_filters,
-                    kernel_size=kernel_size,
-                    #activation='softmax',
-                    #kernel_regularizer=lr,
-                    use_bias=False,
-                    padding='same'
-                ),
-                pruning_schedule=pruning_schedule
-            )
-        )
+        model.add(Conv2D(
+            nb_filters,
+            kernel_size=kernel_size,
+            #activation='softmax',
+            #kernel_regularizer=lr,
+            use_bias=False,
+            padding='same'
+        ))
         model.add(BatchNormalization())
         model.add(Activation('relu'))
         model.add(MaxPooling2D(pool_size=pool_size))#, padding="same"))

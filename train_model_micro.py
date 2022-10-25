@@ -3,7 +3,7 @@ import joblib
 from preprocess_micro import make_data
 from conf import default_conf
 
-from tensorflow_model_optimization.sparsity import keras as sparsity
+import tensorflow as tf
 
 def train_evaluate(config=default_conf, save_model=False):
     (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
@@ -18,22 +18,20 @@ def train_evaluate(config=default_conf, save_model=False):
     model = make_model(dx, dy)
     model.fit(
         X_train, y_train,
-        callbacks=[
-            sparsity.UpdatePruningStep()
-        ],
         batch_size=256,
         epochs=config["epochs"],
         verbose=1,
-        validation_data=(X_test, y_test)
+        validation_split=1.0-config["split_ratio"]
         #shuffle=True,
     )
     #model.summary()
     score = model.evaluate(X_test, y_test, verbose=0)
-    
+
+    print('Test score:', score[0])
+    print('Test accuracy:', score[1])
+
     if save_model:
-        print('Test score:', score[0])
-        print('Test accuracy:', score[1])
-        model.save_weights("colab-train/data/micro_model.h5")
+        tf.keras.models.save_model(model, "colab-train/data/micro_model.h5")
 
     return score, (dx,dy)
 
