@@ -32,7 +32,7 @@ def train_evaluate(config=default_conf, save_model=False):
     ]
 
     model_for_pruning.compile(
-        loss=tf.keras.losses.BinaryCrossentropy,
+        loss=tf.keras.losses.BinaryCrossentropy(),
         optimizer='adam',
         metrics=['accuracy']
     )
