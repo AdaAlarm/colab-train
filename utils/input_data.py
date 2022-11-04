@@ -478,7 +478,8 @@ class AudioProcessor(object):
             num_channels=model_settings['fingerprint_width'],
             out_scale=1,
             out_type=tf.float32)
-        self.output_ = tf.multiply(micro_frontend, (10.0 / 256.0))
+        #self.output_ = tf.multiply(micro_frontend, (10.0 / 256.0))
+        self.output_ = micro_frontend
         tf.compat.v1.summary.image(
             'micro',
             tf.expand_dims(tf.expand_dims(self.output_, -1), 0),
