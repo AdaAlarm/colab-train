@@ -20,8 +20,7 @@ def train_evaluate(config=default_conf, save_model=False):
     X_train = X_train.reshape((X_train.shape[0], dx, dy, dz))
     X_test = X_test.reshape((X_test.shape[0], dx, dy, dz))
 
-    model = make_model(dx, dy)
-    model.load_weights("colab-train/data/micro_model.h5")
+    model = tf.keras.models.load_model('colab-train/data/saved-model/')
 
     model_for_pruning = tfmot.sparsity.keras.prune_low_magnitude(model)
     #model_for_pruning.summary()
@@ -51,7 +50,7 @@ def train_evaluate(config=default_conf, save_model=False):
     print('Test accuracy:', score[1])
 
     if save_model:
-        model_for_pruning.save("colab-train/data/micro_model_pruned.h5", include_optimizer=True)
+        model_for_pruning.save("colab-train/data/saved-model-pruned/", include_optimizer=True)
 
     return score, (dx,dy)
 

@@ -3,5 +3,6 @@ default_conf = {
     'window_stride_ms': 47,
     'feature_bin_count': 25,
     'epochs': 250,
-    'split_ratio': 0.95
+    'split_ratio': 0.95,
+    'lr': 3e-4
 }
