@@ -6,8 +6,8 @@ from conf import default_conf
 import tensorflow as tf
 import tensorflow_model_optimization as tfmot
 
-from tensorflow.keras.optimizers import Adadelta, Adam
-
+#from tensorflow.keras.optimizers import Adadelta, Adam
+from tensorflow.keras.optimizers.legacy import Adam
 
 def train_evaluate(config=default_conf, save_model=False):
     # this should be faster than training, because data already is preprocessed
