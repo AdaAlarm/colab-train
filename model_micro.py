@@ -50,14 +50,14 @@ def make_model(x, y, z=1, lr=3e-4):
     #model.add(Dense(fully_connected, activation='softmax'))
     model.add(Dropout(0.5))
     model.add(Dense(2, activation='softmax'))
-    model.compile(
-        loss='binary_crossentropy',
-        optimizer=Adam(learning_rate=lr),
-        # optimizer=Adadelta(
-        #     learning_rate=1.0, rho=0.9999, epsilon=1e-08, decay=0.
-        # ),
-        metrics=['accuracy']
-    )
+    # model.compile(
+    #     loss='binary_crossentropy',
+    #     optimizer=Adam(learning_rate=lr),
+    #     # optimizer=Adadelta(
+    #     #     learning_rate=1.0, rho=0.9999, epsilon=1e-08, decay=0.
+    #     # ),
+    #     metrics=['accuracy']
+    # )
 
     return model
 
