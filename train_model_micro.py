@@ -33,6 +33,7 @@ def train_evaluate(config=default_conf, save_model=False):
 
     if save_model:
         model.save("colab-train/data/saved-model/")
+        model.save_weights("colab-train/data/weights.tf")
 
     return score, (dx,dy)
 

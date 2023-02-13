@@ -9,6 +9,8 @@ import tensorflow_model_optimization as tfmot
 #from tensorflow.keras.optimizers import Adadelta, Adam
 from tensorflow.keras.optimizers.legacy import Adam
 
+import tempfile
+
 def train_evaluate(config=default_conf, save_model=False):
     # this should be faster than training, because data already is preprocessed
     (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
@@ -23,11 +25,12 @@ def train_evaluate(config=default_conf, save_model=False):
 
     #model = tf.keras.models.load_model('colab-train/data/saved-model/')
     model = make_model(dx, dy, dz, lr)
+    model.load_weights("colab-train/data/weights.tf")
 
     model_for_pruning = tfmot.sparsity.keras.prune_low_magnitude(model)
     model_for_pruning.summary()
 
-    log_dir = "logs/"
+    log_dir = tempfile.mkdtemp()
     callbacks = [
         tfmot.sparsity.keras.UpdatePruningStep(),
         # Log sparsity and other metrics in Tensorboard.
@@ -35,15 +38,17 @@ def train_evaluate(config=default_conf, save_model=False):
     ]
 
     model_for_pruning.compile(
-        loss='binary_crossentropy',
-        optimizer=Adam(learning_rate=lr),
+        #loss='binary_crossentropy',
+        loss=tf.keras.losses.binary_crossentropy,
+        optimizer='adam',
+        #optimizer=Adam(learning_rate=lr),
         metrics=['accuracy']
     )
 
     model_for_pruning.fit(
         X_train, y_train,
         callbacks=callbacks,
-        epochs=config['epochs'],
+        epochs=2,
     )
     #model_for_pruning.summary()
     score = model_for_pruning.evaluate(X_test, y_test, verbose=0)
