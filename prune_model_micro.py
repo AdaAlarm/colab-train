@@ -25,7 +25,7 @@ def train_evaluate(config=default_conf, save_model=False):
     model = make_model(dx, dy, dz, lr)
 
     model_for_pruning = tfmot.sparsity.keras.prune_low_magnitude(model)
-    #model_for_pruning.summary()
+    model_for_pruning.summary()
 
     log_dir = "logs/"
     callbacks = [
