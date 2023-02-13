@@ -25,7 +25,8 @@ def train_evaluate(config=default_conf, save_model=False):
     X_train = X_train.reshape((X_train.shape[0], dx, dy, dz))
     X_test = X_test.reshape((X_test.shape[0], dx, dy, dz))
 
-    model = tf.keras.models.load_model('colab-train/data/saved-model/')
+    with tfmot.sparsity.keras.prune_scope():
+        model = tf.keras.models.load_model('colab-train/data/saved-model/')
     #model = make_model(dx, dy, dz, lr)
     #model.load_weights("colab-train/data/weights.tf")
     #model = tf.keras.models.load_model("colab-train/data/model.h5")
