@@ -42,6 +42,7 @@ def train_evaluate(config=default_conf, save_model=False):
 
     if save_model:
         model.save("colab-train/data/saved-model/")
+        tf.keras.models.save_model(model, "colab-train/data/model.h5", include_optimizer=False)
         model.save_weights("colab-train/data/weights.tf")
 
     return score, (dx,dy)
