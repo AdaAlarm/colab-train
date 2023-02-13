@@ -8,6 +8,8 @@ import tensorflow_model_optimization as tfmot
 
 #from tensorflow.keras.optimizers import Adadelta, Adam
 from tensorflow.keras.optimizers.legacy import Adam
+from tensorflow import keras
+
 
 import tempfile
 
@@ -26,7 +28,15 @@ def train_evaluate(config=default_conf, save_model=False):
     #model = tf.keras.models.load_model('colab-train/data/saved-model/')
     #model = make_model(dx, dy, dz, lr)
     #model.load_weights("colab-train/data/weights.tf")
-    model = tf.keras.models.load_model("colab-train/data/model.h5")
+    #model = tf.keras.models.load_model("colab-train/data/model.h5")
+    model = keras.Sequential([
+      keras.layers.InputLayer(input_shape=(dx, dz)),
+      keras.layers.Reshape(target_shape=(dx, dy, 1)),
+      keras.layers.Conv2D(filters=12, kernel_size=(3, 3), activation='relu'),
+      keras.layers.MaxPooling2D(pool_size=(2, 2)),
+      keras.layers.Flatten(),
+      keras.layers.Dense(2)
+    ])
 
     model_for_pruning = tfmot.sparsity.keras.prune_low_magnitude(model)
     model_for_pruning.summary()
