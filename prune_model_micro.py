@@ -44,6 +44,8 @@ def train_evaluate(config=default_conf, save_model=False):
     log_dir = tempfile.mkdtemp()
     callbacks = [
         tfmot.sparsity.keras.UpdatePruningStep(),
+        tfmot.sparsity.keras.UpdatePruningStep(),
+        tfmot.sparsity.keras.UpdatePruningStep(),
         # Log sparsity and other metrics in Tensorboard.
         tfmot.sparsity.keras.PruningSummaries(log_dir=log_dir)
     ]
