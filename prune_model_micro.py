@@ -47,11 +47,13 @@ def train_evaluate(config=default_conf, save_model=False):
         # Log sparsity and other metrics in Tensorboard.
         tfmot.sparsity.keras.PruningSummaries(log_dir=log_dir)
     ]
-
-    model_for_pruning.fit(
+    model.fit(
         X_train, y_train,
-        callbacks=callbacks,
+        batch_size=256,
         epochs=2,
+        verbose=1,
+        validation_split=1.0-config["split_ratio"]
+        #shuffle=True,
     )
     #model_for_pruning.summary()
     score = model_for_pruning.evaluate(X_test, y_test, verbose=0)
