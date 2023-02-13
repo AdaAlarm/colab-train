@@ -14,13 +14,15 @@ def train_evaluate(config=default_conf, save_model=False):
     (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
 
     dx, dy, dz = X_train.shape[1], X_train.shape[2], 1
+    lr = config['lr']
 
     #print("shape:", (dx,dy))
 
     X_train = X_train.reshape((X_train.shape[0], dx, dy, dz))
     X_test = X_test.reshape((X_test.shape[0], dx, dy, dz))
 
-    model = tf.keras.models.load_model('colab-train/data/saved-model/')
+    #model = tf.keras.models.load_model('colab-train/data/saved-model/')
+    model = make_model(dx, dy, dz, lr)
 
     model_for_pruning = tfmot.sparsity.keras.prune_low_magnitude(model)
     #model_for_pruning.summary()
@@ -34,7 +36,7 @@ def train_evaluate(config=default_conf, save_model=False):
 
     model_for_pruning.compile(
         loss='binary_crossentropy',
-        optimizer=Adam(learning_rate=3e-4),
+        optimizer=Adam(learning_rate=lr),
         metrics=['accuracy']
     )
 
@@ -57,12 +59,3 @@ def train_evaluate(config=default_conf, save_model=False):
 
 if __name__ == '__main__':
     train_evaluate(save_model=True)
-
-# (49,20):
-# Test accuracy: 0.9279835224151611
-
-# (49,40):
-# Test accuracy: 0.9331275820732117
-
-# (22,30)
-
