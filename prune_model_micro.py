@@ -31,7 +31,7 @@ def train_evaluate(config=default_conf, save_model=False):
     #model = tf.keras.models.load_model("colab-train/data/model.h5")
 
     def apply_pruning_to_dense(layer):
-        if isinstance(layer, tf.keras.layers.Dense):
+        if isinstance(layer, tf.keras.layers.Conv2D):
             return tfmot.sparsity.keras.prune_low_magnitude(layer)
         return layer
 
