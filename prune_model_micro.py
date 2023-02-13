@@ -30,8 +30,8 @@ def train_evaluate(config=default_conf, save_model=False):
     #model.load_weights("colab-train/data/weights.tf")
     #model = tf.keras.models.load_model("colab-train/data/model.h5")
     model = keras.Sequential([
-      keras.layers.InputLayer(input_shape=(dx, dy)),
-      keras.layers.Reshape(target_shape=(dx, dy, 1)),
+      keras.layers.InputLayer(input_shape=(dx, dy, dz)),
+      #keras.layers.Reshape(target_shape=(dx, dy, 1)),
       keras.layers.Conv2D(filters=12, kernel_size=(3, 3), activation='relu'),
       keras.layers.MaxPooling2D(pool_size=(2, 2)),
       keras.layers.Flatten(),
