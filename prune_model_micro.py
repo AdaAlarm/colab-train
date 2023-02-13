@@ -31,7 +31,7 @@ def train_evaluate(config=default_conf, save_model=False):
     #model = tf.keras.models.load_model("colab-train/data/model.h5")
 
     def apply_pruning_to_dense(layer):
-        if isinstance(layer, tf.keras.layers.Conv2D):
+        if isinstance(layer, tf.keras.layers.BatchNormalization):
             return tfmot.sparsity.keras.prune_low_magnitude(layer)
         return layer
 
@@ -52,7 +52,7 @@ def train_evaluate(config=default_conf, save_model=False):
 
     model_for_pruning.compile(
         #loss='binary_crossentropy',
-        loss=tf.keras.losses.categorical_crossentropy,
+        loss=tf.keras.losses.binary_crossentropy,
         optimizer='adam',
         #optimizer=Adam(learning_rate=lr),
         metrics=['accuracy']
