@@ -52,7 +52,7 @@ def train_evaluate(config=default_conf, save_model=False):
 
     model_for_pruning.compile(
         #loss='binary_crossentropy',
-        loss=tf.keras.losses.binary_crossentropy,
+        loss=tf.keras.losses.categorical_crossentropy,
         optimizer='adam',
         #optimizer=Adam(learning_rate=lr),
         metrics=['accuracy']
