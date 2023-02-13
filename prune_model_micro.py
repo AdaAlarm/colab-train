@@ -26,7 +26,7 @@ def train_evaluate(config=default_conf, save_model=False):
     #model = tf.keras.models.load_model('colab-train/data/saved-model/')
     #model = make_model(dx, dy, dz, lr)
     #model.load_weights("colab-train/data/weights.tf")
-    tf.keras.models.load_model("colab-train/data/model.h5")
+    model = tf.keras.models.load_model("colab-train/data/model.h5")
 
     model_for_pruning = tfmot.sparsity.keras.prune_low_magnitude(model)
     model_for_pruning.summary()
