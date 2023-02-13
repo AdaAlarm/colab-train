@@ -25,30 +25,13 @@ def train_evaluate(config=default_conf, save_model=False):
     X_train = X_train.reshape((X_train.shape[0], dx, dy, dz))
     X_test = X_test.reshape((X_test.shape[0], dx, dy, dz))
 
-    #model = tf.keras.models.load_model('colab-train/data/saved-model/')
-    model = make_model(dx, dy, dz, lr)
-    model.load_weights("colab-train/data/weights.tf")
+    model = tf.keras.models.load_model('colab-train/data/saved-model/')
+    #model = make_model(dx, dy, dz, lr)
+    #model.load_weights("colab-train/data/weights.tf")
     #model = tf.keras.models.load_model("colab-train/data/model.h5")
 
-    def apply_pruning_to_dense(layer):
-        if isinstance(layer, tf.keras.layers.BatchNormalization):
-            return tfmot.sparsity.keras.prune_low_magnitude(layer)
-        return layer
-
-    model_for_pruning = tf.keras.models.clone_model(
-        model,
-        clone_function=apply_pruning_to_dense,
-    )
-
-    #model_for_pruning = tfmot.sparsity.keras.prune_low_magnitude(model)
+    model_for_pruning = tfmot.sparsity.keras.prune_low_magnitude(model)
     #model_for_pruning.summary()
-
-    log_dir = tempfile.mkdtemp()
-    callbacks = [
-        tfmot.sparsity.keras.UpdatePruningStep(),
-        # Log sparsity and other metrics in Tensorboard.
-        tfmot.sparsity.keras.PruningSummaries(log_dir=log_dir)
-    ]
 
     model_for_pruning.compile(
         #loss='binary_crossentropy',
@@ -57,6 +40,13 @@ def train_evaluate(config=default_conf, save_model=False):
         #optimizer=Adam(learning_rate=lr),
         metrics=['accuracy']
     )
+
+    log_dir = tempfile.mkdtemp()
+    callbacks = [
+        tfmot.sparsity.keras.UpdatePruningStep(),
+        # Log sparsity and other metrics in Tensorboard.
+        tfmot.sparsity.keras.PruningSummaries(log_dir=log_dir)
+    ]
 
     model_for_pruning.fit(
         X_train, y_train,
