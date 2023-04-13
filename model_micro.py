@@ -10,11 +10,11 @@ from tensorflow.keras.optimizers.legacy import Adam
 from tensorflow.keras.regularizers import l2
 
 def make_model(x, y, z=1, lr=3e-4):
-    nb_filters = 24  # number of convolutional filters to use
+    nb_filters = 6  # number of convolutional filters to use
     kernel_size = (2, 2)  # convolution kernel size
     pool_size = (2, 2)  # size of pooling area for pooling
 
-    nb_layers = 4
+    nb_layers = 1
     #fully_connected = 20
 
     model = Sequential()
