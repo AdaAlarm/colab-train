@@ -45,10 +45,10 @@ def make_model(x, y, z=1):
     #model.add(MaxPooling2D(pool_size=pool_size))
     #model.add(AveragePooling2D(pool_size=pool_size))
 
-    model.add(Flatten())
-
     #model.add(Dense(fully_connected, activation='softmax'))
     model.add(Dropout(0.5))
+
+    model.add(Flatten())
     model.add(Dense(2, activation='softmax'))
     # model.compile(
     #     loss='binary_crossentropy',

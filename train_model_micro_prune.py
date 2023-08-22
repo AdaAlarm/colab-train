@@ -25,11 +25,11 @@ def train_evaluate(config=default_conf, save_model=False):
 
     epochs = config["epochs"]
     if config["sample"]:
-        epochs = 1
+        epochs = 2
 
     model = make_model(dx, dy, dz)
     model.compile(
-        loss=tf.keras.losses.CategoricalCrossentropy(),#loss='binary_crossentropy',
+        loss='binary_crossentropy',
         optimizer=Adam(learning_rate=lr),
         # optimizer=Adadelta(
         #     learning_rate=1.0, rho=0.9999, epsilon=1e-08, decay=0.
@@ -54,22 +54,21 @@ def train_evaluate(config=default_conf, save_model=False):
         print("Begin pruning ...")
 
         prune_low_magnitude = tfmot.sparsity.keras.prune_low_magnitude
-        end_step = 844
 
         # Define model for pruning.
         pruning_params = {
               'pruning_schedule': tfmot.sparsity.keras.PolynomialDecay(initial_sparsity=0.50,
                                                                        final_sparsity=0.80,
                                                                        begin_step=0,
-                                                                       end_step=end_step)
+                                                                       end_step=1)
         }
 
         model_for_pruning = prune_low_magnitude(model, **pruning_params)
 
         # `prune_low_magnitude` requires a recompile.
         model_for_pruning.compile(
-            loss=tf.keras.losses.CategoricalCrossentropy(),#loss='binary_crossentropy',
-            optimizer=Adam(learning_rate=lr),
+            loss='binary_crossentropy',
+            optimizer='adam',
             metrics=['accuracy']
         )
 
@@ -89,11 +88,11 @@ def train_evaluate(config=default_conf, save_model=False):
         # model_for_pruning.fit(train_images, train_labels,
         #                   batch_size=batch_size, epochs=epochs, validation_split=validation_split,
         #                   callbacks=callbacks)
+
         model_for_pruning.fit(
             X_train, y_train,
             batch_size=config["batch_size"],
             epochs=epochs,
-            verbose=1,
             validation_split=1.0-config["split_ratio"],
             callbacks=callbacks
         )
