@@ -29,7 +29,7 @@ def train_evaluate(config=default_conf, save_model=False):
 
     model = make_model(dx, dy, dz)
     model.compile(
-        loss=tf.keras.losses.SparseCategoricalCrossentropy(),#loss='binary_crossentropy',
+        loss=tf.keras.losses.CategoricalCrossentropy(),#loss='binary_crossentropy',
         optimizer=Adam(learning_rate=lr),
         # optimizer=Adadelta(
         #     learning_rate=1.0, rho=0.9999, epsilon=1e-08, decay=0.
@@ -68,7 +68,7 @@ def train_evaluate(config=default_conf, save_model=False):
 
         # `prune_low_magnitude` requires a recompile.
         model_for_pruning.compile(
-            loss=tf.keras.losses.SparseCategoricalCrossentropy(),#loss='binary_crossentropy',
+            loss=tf.keras.losses.CategoricalCrossentropy(),#loss='binary_crossentropy',
             optimizer=Adam(learning_rate=lr),
             metrics=['accuracy']
         )
