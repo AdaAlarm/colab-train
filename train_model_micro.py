@@ -1,9 +1,10 @@
-    from model_micro import make_model
 import joblib
+import tensorflow as tf
+
+from model_micro import make_model
 from preprocess_micro import make_data
 from conf import default_conf
 
-import tensorflow as tf
 from tensorflow.keras.optimizers.legacy import Adam
 
 def train_evaluate(config=default_conf, save_model=False):
@@ -12,12 +13,17 @@ def train_evaluate(config=default_conf, save_model=False):
     dx, dy, dz = X_train.shape[1], X_train.shape[2], 1
     lr = config['lr']
 
-    #print("shape:", (dx,dy))
+    print("model shape:", (dx,dy))
+    print("samples:", len(X_train))
 
     X_train = X_train.reshape((X_train.shape[0], dx, dy, dz))
     X_test = X_test.reshape((X_test.shape[0], dx, dy, dz))
 
-    model = make_model(dx, dy, dz, lr)
+    epochs = config["epochs"]
+    if config["sample"]:
+        epochs = 2
+
+    model = make_model(dx, dy, dz)
     model.compile(
         loss='binary_crossentropy',
         optimizer=Adam(learning_rate=lr),
@@ -29,7 +35,7 @@ def train_evaluate(config=default_conf, save_model=False):
     model.fit(
         X_train, y_train,
         batch_size=256,
-        epochs=config["epochs"],
+        epochs=epochs,
         verbose=1,
         validation_split=1.0-config["split_ratio"]
         #shuffle=True,

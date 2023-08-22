@@ -56,6 +56,7 @@ def get_data(audio_processor, model_settings, sample=False):
     try:
         # load existing preprocessed data
         with open(pickle_file, 'rb') as handle:
+            print("loaded data cache.")
             data = pickle.load(handle)
     except:
         # preprocessed file does not exist; make it

@@ -1,6 +1,7 @@
 from conf import default_conf
 from preprocess import make_front_end
 from preprocess import get_train_test
+import numpy as np
 
 def make_data(config=default_conf):
 
@@ -12,12 +13,25 @@ def make_data(config=default_conf):
 
     sample = config["sample"]
 
-    return get_train_test(
+    (X_train, X_test, y_train, y_test, paths_train, paths_test) = get_train_test(
         audio_processor,
         model_settings,
         split_ratio=config["split_ratio"],
         sample=sample
     )
+
+    if config["normalize"]:
+        X_train = X_train / 30.0
+        X_test = X_test / 30.0
+
+        def toint(y):
+            eq = np.array_equal(y, np.array([0., 1.]))
+            return int(eq)
+
+        y_train = [toint(y) for y in y_train]
+        y_test = [toint(y) for y in y_test]
+
+    return (X_train, X_test, y_train, y_test, paths_train, paths_test)
 
 
 if __name__ == '__main__':
