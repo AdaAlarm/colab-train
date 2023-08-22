@@ -1,4 +1,4 @@
-from model_micro import make_model
+    from model_micro import make_model
 import joblib
 from preprocess_micro import make_data
 from conf import default_conf
@@ -50,6 +50,10 @@ def train_evaluate(config=default_conf, save_model=False):
 
 if __name__ == '__main__':
     train_evaluate(save_model=True)
+
+# (25,21):
+# Test accuracy: 0.9547124
+
 
 # (49,20):
 # Test accuracy: 0.9279835224151611

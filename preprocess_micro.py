@@ -10,7 +10,14 @@ def make_data(config=default_conf):
         config["feature_bin_count"]
     )
 
-    return get_train_test(audio_processor, model_settings, split_ratio=config["split_ratio"])
+    sample = config["sample"]
+
+    return get_train_test(
+        audio_processor,
+        model_settings,
+        split_ratio=config["split_ratio"],
+        sample=sample
+    )
 
 
 if __name__ == '__main__':

@@ -4,5 +4,7 @@ default_conf = {
     'feature_bin_count': 25,
     'epochs': 250,
     'split_ratio': 0.95,
-    'lr': 3e-4
+    'lr': 3e-4,
+    'sample': True,
+    'prune': True
 }
