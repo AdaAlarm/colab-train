@@ -22,9 +22,6 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     X_train = tf.reshape(X_train, (X_train.shape[0], dx, dy, dz))
     X_test = tf.reshape(X_test, (X_test.shape[0], dx, dy, dz))
 
-    y_train = np.array(y_train)
-    y_test = np.array(y_train)
-    
     # Fix y_train shape if necessary
     if len(y_train.shape) > 2:
         y_train = np.squeeze(y_train)
