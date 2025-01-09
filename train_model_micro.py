@@ -10,7 +10,6 @@ from tensorflow.keras.utils import to_categorical
 import numpy as np
 
 
-@tf.function
 def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     dx, dy, dz = X_train.shape[1], X_train.shape[2], 1
     lr = config['lr']
@@ -26,11 +25,6 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     X_train = tf.reshape(X_train, (tf.shape(X_train)[0], dx, dy, dz))
     X_test = tf.reshape(X_test, (tf.shape(X_test)[0], dx, dy, dz))
 
-    # Ensure labels remain as NumPy arrays (do not modify them)
-    if isinstance(y_train, tf.Tensor):
-        y_train = y_train.numpy()
-    if isinstance(y_test, tf.Tensor):
-        y_test = y_test.numpy()
 
     print(y_train.shape)
     print(y_test.shape)
