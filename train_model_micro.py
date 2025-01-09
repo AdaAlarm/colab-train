@@ -26,9 +26,9 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     y_train = tf.cast(y_train, tf.int32)
     y_test = tf.cast(y_test, tf.int32)
 
-    # Ensure y_train is rank 1 before one-hot encoding
-    y_train = tf.reshape(y_train, [-1])
-    y_test = tf.reshape(y_test, [-1])
+    # Ensure labels are 1D (batch_size,) before one-hot encoding
+    y_train = tf.squeeze(y_train, axis=-1)
+    y_test = tf.squeeze(y_test, axis=-1)
 
     # One-hot encode the labels
     y_train = tf.one_hot(y_train, depth=2)
