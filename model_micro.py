@@ -18,7 +18,7 @@ def make_model(x, y, z=1):
     #fully_connected = 20
 
     model = Sequential()
-    model.add(InputLayer(input_shape=(x, y, z)))
+    model.add(InputLayer(shape=(x, y, z)))
     
     #for layer in range(nb_layers-1):
     model.add(Conv2D(
