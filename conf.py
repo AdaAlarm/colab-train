@@ -8,5 +8,6 @@ default_conf = {
     'sample': False,
     'pruning': True,
     'batch_size': 256,
-    'normalize': False
+    'normalize': False,
+    'dataset_path': 'colab-train/data/data.pickle'
 }
