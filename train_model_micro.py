@@ -22,33 +22,29 @@ def train_evaluate(config=default_conf, save_model=False):
     X_train = X_train.reshape((X_train.shape[0], dx, dy, dz))
     X_test = X_test.reshape((X_test.shape[0], dx, dy, dz))
 
-    batch_size = config["batch_size"]
-
-    train_dataset = tf.data.Dataset.from_tensor_slices((X_train, y_train)).batch(batch_size).prefetch(AUTOTUNE)
-    validation_dataset = tf.data.Dataset.from_tensor_slices((X_test, y_test)).batch(batch_size).prefetch(AUTOTUNE)
-
-    # Manually specify a known cardinality for debugging
-    train_dataset = train_dataset.apply(tf.data.experimental.assert_cardinality(len(X_train)))
-    validation_dataset = validation_dataset.apply(tf.data.experimental.assert_cardinality(len(X_test)))
-
+    batch_size = config["batch_size"]   
     epochs = config["epochs"]
 
     model = make_model(dx, dy, dz)
     model.compile(
-        loss='binary_crossentropy',
+        loss=tf.keras.losses.BinaryCrossentropy(),
         optimizer=tf.keras.optimizers.Adam(learning_rate=lr),
         # optimizer=Adadelta(
         #     learning_rate=1.0, rho=0.9999, epsilon=1e-08, decay=0.
         # ),
-        metrics=['accuracy']
+        metrics=[
+            # 'accuracy'
+            tf.keras.metrics.BinaryAccuracy()
+        ]
     )
 
     model.fit(
-        train_dataset,
+        X_train,
+        y_train
         batch_size=batch_size,
         epochs=epochs,
         verbose=1,
-        validation_data=validation_dataset
+        validation_split=1.0-config["split_ratio"]
         #shuffle=True,
     )
     #model.summary()
