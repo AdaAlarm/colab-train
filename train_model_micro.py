@@ -5,7 +5,7 @@ from model_micro import make_model
 from preprocess_micro import make_data
 from conf import default_conf
 
-from tensorflow.keras.optimizers.legacy import Adam
+#from tensorflow.keras.optimizers.legacy import Adam
 
 def train_evaluate(config=default_conf, save_model=False):
     (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
@@ -26,7 +26,7 @@ def train_evaluate(config=default_conf, save_model=False):
     model = make_model(dx, dy, dz)
     model.compile(
         loss='binary_crossentropy',
-        optimizer=Adam(learning_rate=lr),
+        optimizer=tf.keras.optimizers.Adam(learning_rate=lr),
         # optimizer=Adadelta(
         #     learning_rate=1.0, rho=0.9999, epsilon=1e-08, decay=0.
         # ),
