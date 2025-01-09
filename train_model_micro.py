@@ -65,9 +65,11 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
 
 
 if __name__ == '__main__':
-    (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(default_conf)
+    conf = default_conf
 
-    train_evaluate(X_train, X_test, y_train, y_test, save_model=True)
+    (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(conf)
+
+    train_evaluate(X_train, X_test, y_train, y_test, conf, save_model=True)
 
 # (25,21):
 # Test accuracy: 0.9547124
