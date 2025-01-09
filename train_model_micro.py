@@ -73,7 +73,7 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
 if __name__ == '__main__':
     conf = default_conf
 
-    if os.path.isdir(conf['dataset_path']):
+    if os.path.isfile(conf['dataset_path']):
         from dataset import load_data
         (X_train, X_test, y_train, y_test, paths_train, paths_test) = load_data()
     else:
