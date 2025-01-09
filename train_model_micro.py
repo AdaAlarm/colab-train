@@ -64,7 +64,7 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     print('Test score:', score[0])
     print('Test accuracy:', score[1])
 
-    model.save("colab-train/data/saved-model/", include_optimizer=False)
+    model.export("colab-train/data/saved-model/", include_optimizer=False)
     #keras.models.save_model(model, "colab-train/data/model.h5", include_optimizer=False)
     #model.save_weights("colab-train/data/weights.tf")
 
