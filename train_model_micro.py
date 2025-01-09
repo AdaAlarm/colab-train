@@ -43,6 +43,9 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
         ]
     )
 
+    X_train = tf.random.normal([1000, 28, 28, 1])
+    y_train = tf.one_hot(tf.random.uniform([1000], maxval=2, dtype=tf.int32), depth=2)
+
     model.fit(
         X_train,
         y_train,
