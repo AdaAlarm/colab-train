@@ -38,10 +38,22 @@ def train_evaluate(config=default_conf, save_model=False):
         ]
     )
 
+    def data_generator(X, y, batch_size):
+        n_samples = len(X)
+        while True:  # Infinite loop for Keras
+            for i in range(0, n_samples, batch_size):
+                X_batch = X[i:i + batch_size]
+                y_batch = y[i:i + batch_size]
+                yield X_batch, y_batch
+
+    train_gen = data_generator(X_train, y_train, batch_size=batch_size)
+    test_gen = data_generator(X_test, y_test, batch_size=batch_size)
+
     model.fit(
-        X_train,
-        y_train,
-        batch_size=batch_size,
+        train_gen,
+        #X_train,
+        #y_train,
+        #batch_size=batch_size,
         epochs=epochs,
         verbose=1,
         validation_split=1.0-config["split_ratio"]
