@@ -8,7 +8,7 @@ from conf import default_conf
 
 from tensorflow.keras.utils import to_categorical
 
-import numpy as np
+
 
 
 @tf.function
@@ -19,8 +19,9 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     print("model shape:", (dx,dy))
     print("samples:", len(X_train))
 
-    X_train = np.array(X_train).reshape((X_train.shape[0], dx, dy, dz))
-    X_test = np.array(X_test).reshape((X_test.shape[0], dx, dy, dz))
+    X_train = tf.reshape(X_train, (X_train.shape[0], dx, dy, dz))
+    X_test = tf.reshape(X_test, (X_test.shape[0], dx, dy, dz))
+
     y_train = np.array(y_train)
     y_test = np.array(y_train)
     
