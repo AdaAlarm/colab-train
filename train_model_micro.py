@@ -7,8 +7,6 @@ from conf import default_conf
 
 #from tensorflow.keras.optimizers.legacy import Adam
 
-tf.config.run_functions_eagerly(True)
-
 def train_evaluate(config=default_conf, save_model=False):
     (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
 
@@ -23,8 +21,8 @@ def train_evaluate(config=default_conf, save_model=False):
 
     batch_size = config["batch_size"]
 
-    train_dataset = tf.data.Dataset.from_tensor_slices((X_train, y_train)).batch(batch_size)
-    validation_dataset = tf.data.Dataset.from_tensor_slices((X_test, y_test)).batch(batch_size)
+    train_dataset = tf.data.Dataset.from_tensor_slices((X_train, y_train)).batch(batch_size).prefetch(tf.data.AUTOTUNE)
+    validation_dataset = tf.data.Dataset.from_tensor_slices((X_test, y_test)).batch(batch_size).prefetch(tf.data.AUTOTUNE)
 
     epochs = config["epochs"]
     if config["sample"]:
