@@ -7,7 +7,7 @@ import tensorflow as tf
 import pickle
 import os
 
-#sess = tf.compat.v1.InteractiveSession()
+sess = tf.compat.v1.InteractiveSession()
 
 def get_vector_shape(filename, config):
     audio_processor, model_settings = make_front_end(
