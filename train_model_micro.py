@@ -55,11 +55,10 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
         y_train,
         batch_size=batch_size,
         epochs=epochs,
-        verbose=1,
         validation_data=(X_test, y_test)
     )
 
-    score = model.evaluate(X_test, y_test, verbose=0)
+    score = model.evaluate(X_test, y_test)
 
     print('Test score:', score[0])
     print('Test accuracy:', score[1])
@@ -74,12 +73,11 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
 if __name__ == '__main__':
     conf = default_conf
 
-    #from preprocess_micro import make_data
-    #(X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(conf)
-
-    
-    from dataset import load_data
-    (X_train, X_test, y_train, y_test, paths_train, paths_test) = load_data()
+    if os.path.isdir(conf['dataset_path']):
+        from dataset import load_data
+        (X_train, X_test, y_train, y_test, paths_train, paths_test) = load_data()
+    else:
+        raise Exception("dataset not found, run make_data")
     
     tf.config.run_functions_eagerly(True)
     print("Eager execution enabled:", tf.executing_eagerly())  # Should print True
