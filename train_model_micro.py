@@ -59,6 +59,60 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     #keras.models.save_model(model, "colab-train/data/model.h5", include_optimizer=False)
     #model.save_weights("colab-train/data/weights.tf")
 
+    if config["pruning"]:
+        print("Begin pruning ...")
+
+        prune_low_magnitude = tfmot.sparsity.keras.prune_low_magnitude
+
+        # Define model for pruning.
+        pruning_params = {
+              'pruning_schedule': tfmot.sparsity.keras.PolynomialDecay(initial_sparsity=0.50,
+                                                                       final_sparsity=0.80,
+                                                                       begin_step=0,
+                                                                       end_step=1)
+        }
+
+        model_for_pruning = prune_low_magnitude(model, **pruning_params)
+
+        # `prune_low_magnitude` requires a recompile.
+        model.compile(
+            loss=tf.keras.losses.BinaryCrossentropy(),
+            optimizer=tf.keras.optimizers.Adam(learning_rate=lr),
+            metrics=[
+                tf.keras.metrics.BinaryAccuracy()
+            ]
+        )
+
+        model.summary()
+
+        print(100 * "*")
+
+        model_for_pruning.summary()
+
+        logdir = tempfile.mkdtemp()
+
+        callbacks = [
+            tfmot.sparsity.keras.UpdatePruningStep(),
+            tfmot.sparsity.keras.PruningSummaries(log_dir=logdir),
+        ]
+
+        model_for_pruning.fit(
+            X_train, y_train,
+            batch_size=config["batch_size"],
+            epochs=epochs,
+            validation_data=(X_test, y_test),
+            callbacks=callbacks
+        )
+
+        score = model_for_pruning.evaluate(X_test, y_test, verbose=0)
+
+        print('Pruned Test score:', score[0])
+        print('Pruned Test accuracy:', score[1])
+
+        model.export("colab-train/data/saved-pruned-model/")
+        #tf.keras.models.save_model(model, "colab-train/data/model.h5", include_optimizer=False)
+        #model.save_weights("colab-train/data/weights.tf")
+
     return score, (dx,dy)
 
 
@@ -72,7 +126,6 @@ if __name__ == '__main__':
         raise Exception("dataset not found, run make_data")
     
     tf.config.run_functions_eagerly(True)
-    print("Eager execution enabled:", tf.executing_eagerly())  # Should print True
 
     train_evaluate(X_train, X_test, y_train, y_test, conf, save_model=True)
 
