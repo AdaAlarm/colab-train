@@ -77,8 +77,8 @@ if __name__ == '__main__':
 
     (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(conf)
 
-    import tensorflow as tf
     tf.config.run_functions_eagerly(True)
+    tf.data.experimental.enable_debug_mode()
 
     train_evaluate(X_train, X_test, y_train, y_test, conf, save_model=True)
 
