@@ -22,19 +22,11 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     X_train = tf.reshape(X_train, (tf.shape(X_train)[0], dx, dy, dz))
     X_test = tf.reshape(X_test, (tf.shape(X_test)[0], dx, dy, dz))
 
-    # Ensure labels are tensors
-    y_train = tf.cast(y_train, tf.int32)
-    y_test = tf.cast(y_test, tf.int32)
-
-    # Ensure labels are 1D (batch_size,) before one-hot encoding
-    if len(y_train.shape) > 1:
-        y_train = tf.squeeze(y_train, axis=-1)
-    if len(y_test.shape) > 1:
-        y_test = tf.squeeze(y_test, axis=-1)
-
-    # One-hot encode the labels
-    y_train = tf.one_hot(y_train, depth=2)
-    y_test = tf.one_hot(y_test, depth=2)
+    # One-hot encode the labels only if necessary
+    if len(y_train.shape) == 1:  # Labels are not one-hot encoded
+        y_train = tf.one_hot(y_train, depth=2)
+    if len(y_test.shape) == 1:
+        y_test = tf.one_hot(y_test, depth=2)
 
     print(y_train.shape)
     print(y_test.shape)
