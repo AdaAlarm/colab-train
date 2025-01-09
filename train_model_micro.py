@@ -10,7 +10,7 @@ from tensorflow.keras.utils import to_categorical
 
 
 @tf.function
-def train_evaluate(X_train, X_test, y_train, y_test, config=default_conf, save_model=False):
+def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     dx, dy, dz = X_train.shape[1], X_train.shape[2], 1
     lr = config['lr']
 
@@ -65,7 +65,7 @@ def train_evaluate(X_train, X_test, y_train, y_test, config=default_conf, save_m
 
 
 if __name__ == '__main__':
-    (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
+    (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(default_conf)
 
     train_evaluate(X_train, X_test, y_train, y_test, save_model=True)
 
