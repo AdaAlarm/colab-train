@@ -32,6 +32,7 @@ def train_evaluate(config=default_conf, save_model=False):
         # ),
         metrics=['accuracy']
     )
+
     model.fit(
         X_train, y_train,
         batch_size=256,
