@@ -21,8 +21,12 @@ def train_evaluate(config=default_conf, save_model=False):
 
     batch_size = config["batch_size"]
 
-    train_dataset = tf.data.Dataset.from_tensor_slices((X_train, y_train)).batch(batch_size).prefetch(tf.data.AUTOTUNE)
-    validation_dataset = tf.data.Dataset.from_tensor_slices((X_test, y_test)).batch(batch_size).prefetch(tf.data.AUTOTUNE)
+    train_dataset = tf.data.Dataset.from_tensor_slices((X_train, y_train)).batch(batch_size)
+    validation_dataset = tf.data.Dataset.from_tensor_slices((X_test, y_test)).batch(batch_size)
+
+    # Convert the dataset to NumPy-like format
+    train_dataset = list(train_dataset.as_numpy_iterator())
+    validation_dataset = list(validation_dataset.as_numpy_iterator())
 
     epochs = config["epochs"]
     if config["sample"]:
