@@ -31,6 +31,11 @@ def make_data(config=default_conf):
         y_train = [toint(y) for y in y_train]
         y_test = [toint(y) for y in y_test]
 
+    X_train = np.array(X_train)
+    y_train = np.array(y_train)
+    X_test = np.array(X_test)
+    y_test = np.array(y_test)
+
     return (X_train, X_test, y_train, y_test, paths_train, paths_test)
 
 
