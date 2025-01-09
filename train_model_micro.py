@@ -7,6 +7,8 @@ from conf import default_conf
 
 #from tensorflow.keras.optimizers.legacy import Adam
 
+tf.config.run_functions_eagerly(True)
+
 def train_evaluate(config=default_conf, save_model=False):
     (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
 
