@@ -13,6 +13,9 @@ from tensorflow.keras.utils import to_categorical
 def train_evaluate(config=default_conf, save_model=False):
     (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
 
+    y_train = to_categorical(y_train, num_classes=2)
+    y_test = to_categorical(y_test, num_classes=2)
+
     dx, dy, dz = X_train.shape[1], X_train.shape[2], 1
     lr = config['lr']
 
