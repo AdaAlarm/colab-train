@@ -1,4 +1,5 @@
-
+import pickle
+import numpy as np
 
 def load_data():
     pickle_file = 'colab-train/data/data.pickle'
