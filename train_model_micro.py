@@ -43,7 +43,7 @@ def train_evaluate(config=default_conf, save_model=False):
         batch_size=batch_size,
         epochs=epochs,
         verbose=1,
-        validation_split=validation_dataset
+        validation_data=validation_dataset
         #shuffle=True,
     )
     #model.summary()
