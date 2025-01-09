@@ -1,13 +1,10 @@
 import joblib
 import tensorflow as tf
+import keras
 
 from model_micro import make_model
 from preprocess_micro import make_data
 from conf import default_conf
-
-#from tensorflow.keras.optimizers.legacy import Adam
-from tensorflow.python.data.ops.dataset_ops import AUTOTUNE
-
 
 
 def train_evaluate(config=default_conf, save_model=False):
@@ -27,14 +24,14 @@ def train_evaluate(config=default_conf, save_model=False):
 
     model = make_model(dx, dy, dz)
     model.compile(
-        loss=tf.keras.losses.BinaryCrossentropy(),
-        optimizer=tf.keras.optimizers.Adam(learning_rate=lr),
+        loss=keras.losses.BinaryCrossentropy(),
+        optimizer=keras.optimizers.Adam(learning_rate=lr),
         # optimizer=Adadelta(
         #     learning_rate=1.0, rho=0.9999, epsilon=1e-08, decay=0.
         # ),
         metrics=[
             # 'accuracy'
-            tf.keras.metrics.BinaryAccuracy()
+            keras.metrics.BinaryAccuracy()
         ]
     )
 
@@ -55,7 +52,7 @@ def train_evaluate(config=default_conf, save_model=False):
 
     if save_model:
         model.save("colab-train/data/saved-model/", include_optimizer=False)
-        #tf.keras.models.save_model(model, "colab-train/data/model.h5", include_optimizer=False)
+        #keras.models.save_model(model, "colab-train/data/model.h5", include_optimizer=False)
         #model.save_weights("colab-train/data/weights.tf")
 
     return score, (dx,dy)
