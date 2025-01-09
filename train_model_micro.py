@@ -24,19 +24,8 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
 
     print(y_train.shape)
     print(y_test.shape)
-
     print(70 * "*")
-    print(y_train)
-
-    y_train = to_categorical(y_train, num_classes=2)
-    y_test = to_categorical(y_test, num_classes=2)
-
-    print(y_train.shape)
-    print(y_test.shape)
-
-    print(70 * "*")
-    print(y_train)
-
+    
     batch_size = config["batch_size"]   
     epochs = config["epochs"]
 
