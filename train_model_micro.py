@@ -51,13 +51,21 @@ def train_evaluate(config=default_conf, save_model=False):
 
     model.fit(
         train_gen,
-        #X_train,
-        #y_train,
-        #batch_size=batch_size,
         epochs=epochs,
         verbose=1,
-        validation_split=1.0-config["split_ratio"]
+        validation_data=test_gen,
+        steps_per_epoch=len(X_train) // batch_size,
+        validation_steps=len(X_test) // batch_size
     )
+
+    # model.fit(
+    #     X_train,
+    #     y_train,
+    #     batch_size=batch_size,
+    #     epochs=epochs,
+    #     verbose=1,
+    #     validation_split=1.0-config["split_ratio"]
+    # )
 
     score = model.evaluate(X_test, y_test, verbose=0)
 
