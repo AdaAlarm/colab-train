@@ -9,7 +9,7 @@ from conf import default_conf
 from tensorflow.keras.utils import to_categorical
 
 
-
+@tf.function
 def train_evaluate(config=default_conf, save_model=False):
     (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
 
@@ -38,44 +38,23 @@ def train_evaluate(config=default_conf, save_model=False):
         ]
     )
 
-    def data_generator(X, y, batch_size):
-        n_samples = len(X)
-        while True:  # Infinite loop for Keras
-            for i in range(0, n_samples, batch_size):
-                X_batch = X[i:i + batch_size]
-                y_batch = y[i:i + batch_size]
-                yield X_batch, y_batch
-
-    train_gen = data_generator(X_train, y_train, batch_size=batch_size)
-    test_gen = data_generator(X_test, y_test, batch_size=batch_size)
-
     model.fit(
-        train_gen,
+        X_train,
+        y_train,
+        batch_size=batch_size,
         epochs=epochs,
         verbose=1,
-        validation_data=test_gen,
-        steps_per_epoch=len(X_train) // batch_size,
-        validation_steps=len(X_test) // batch_size
+        validation_split=1.0-config["split_ratio"]
     )
-
-    # model.fit(
-    #     X_train,
-    #     y_train,
-    #     batch_size=batch_size,
-    #     epochs=epochs,
-    #     verbose=1,
-    #     validation_split=1.0-config["split_ratio"]
-    # )
 
     score = model.evaluate(X_test, y_test, verbose=0)
 
     print('Test score:', score[0])
     print('Test accuracy:', score[1])
 
-    if save_model:
-        model.save("colab-train/data/saved-model/", include_optimizer=False)
-        #keras.models.save_model(model, "colab-train/data/model.h5", include_optimizer=False)
-        #model.save_weights("colab-train/data/weights.tf")
+    model.save("colab-train/data/saved-model/", include_optimizer=False)
+    #keras.models.save_model(model, "colab-train/data/model.h5", include_optimizer=False)
+    #model.save_weights("colab-train/data/weights.tf")
 
     return score, (dx,dy)
 
