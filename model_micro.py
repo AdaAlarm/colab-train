@@ -1,14 +1,13 @@
 import tensorflow as tf
-import keras
 
-from keras import Sequential
-from keras.layers import Dense, Dropout, Activation, Flatten, Reshape, Dot
-from keras.layers import InputLayer, Conv2D, MaxPooling2D, Lambda, BatchNormalization
-from keras.layers import DepthwiseConv2D, AveragePooling2D, GlobalAveragePooling2D
+from tf.keras import Sequential
+from tf.keras.layers import Dense, Dropout, Activation, Flatten, Reshape, Dot
+from tf.keras.layers import InputLayer, Conv2D, MaxPooling2D, Lambda, BatchNormalization
+from tf.keras.layers import DepthwiseConv2D, AveragePooling2D, GlobalAveragePooling2D
 
 #from tensorflow.keras.optimizers import Adadelta, Adam
-from keras.optimizers.legacy import Adam
-from keras.regularizers import l2
+from tf.keras.optimizers.legacy import Adam
+from tf.keras.regularizers import l2
 
 def make_model(x, y, z=1):
     nb_filters = 24  # number of convolutional filters to use

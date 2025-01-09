@@ -1,6 +1,5 @@
 import joblib
 import tensorflow as tf
-import keras
 
 from model_micro import make_model
 from preprocess_micro import make_data
@@ -19,17 +18,17 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     print("model shape:", (dx,dy))
     print("samples:", len(X_train))
 
-    X_train = np.array(X_train)
-    X_test = np.array(X_train)
+    # Reshape input tensors
+    X_train = tf.reshape(X_train, (tf.shape(X_train)[0], dx, dy, dz))
+    X_test = tf.reshape(X_test, (tf.shape(X_test)[0], dx, dy, dz))
 
-    y_train = np.array(y_train)
-    y_test = np.array(y_train)
+    # Ensure labels are tensors
+    y_train = tf.cast(y_train, tf.int32)
+    y_test = tf.cast(y_test, tf.int32)
 
-    X_train = X_train.reshape((X_train.shape[0], dx, dy, dz))
-    X_test = X_test.reshape((X_test.shape[0], dx, dy, dz))
-
-    y_train = np.eye(2)[y_train.astype(int)]
-    y_test = np.eye(2)[y_test.astype(int)]
+    # One-hot encode the labels
+    y_train = tf.one_hot(y_train, depth=2)
+    y_test = tf.one_hot(y_test, depth=2)
 
     print(y_train.shape)
     print(y_test.shape)
@@ -41,10 +40,10 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     model = make_model(dx, dy, dz)
     
     model.compile(
-        loss=keras.losses.BinaryCrossentropy(),
-        optimizer=keras.optimizers.Adam(learning_rate=lr),
+        loss=tf.keras.losses.BinaryCrossentropy(),
+        optimizer=tf.keras.optimizers.Adam(learning_rate=lr),
         metrics=[
-            keras.metrics.BinaryAccuracy()
+            tf.keras.metrics.BinaryAccuracy()
         ]
     )
 
