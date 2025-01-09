@@ -40,7 +40,7 @@ def train_evaluate(config=default_conf, save_model=False):
 
     model.fit(
         X_train,
-        y_train
+        y_train,
         batch_size=batch_size,
         epochs=epochs,
         verbose=1,
