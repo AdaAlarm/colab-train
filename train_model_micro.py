@@ -22,13 +22,8 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     X_train = tf.reshape(X_train, (X_train.shape[0], dx, dy, dz))
     X_test = tf.reshape(X_test, (X_test.shape[0], dx, dy, dz))
 
-    # Fix y_train shape if necessary
-    if len(y_train.shape) > 2:
-        y_train = np.squeeze(y_train)
-
-    # Ensure one-hot encoding
-    if y_train.ndim == 1 or y_train.shape[1] == 1:
-        y_train = to_categorical(y_train, num_classes=2)
+    y_train = to_categorical(y_train, num_classes=2)
+    y_test = to_categorical(y_test, num_classes=2)
 
     batch_size = config["batch_size"]   
     epochs = config["epochs"]
