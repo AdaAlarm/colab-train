@@ -1,6 +1,7 @@
 import pickle
 import numpy as np
 from sklearn.model_selection import train_test_split
+from conf import default_conf
 
 def load_data():
     pickle_file = 'colab-train/data/data.pickle'
@@ -18,7 +19,7 @@ def load_data():
 
     X_train, X_test, y_train, y_test, paths_train, paths_test = train_test_split(
         X, y, files,
-        test_size=(1 - split_ratio),
+        test_size=(1 - default_conf["split_ratio"]),
         random_state=random_state,
         shuffle=True
     )
