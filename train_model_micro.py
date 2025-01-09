@@ -22,8 +22,20 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     X_train = tf.reshape(X_train, (X_train.shape[0], dx, dy, dz))
     X_test = tf.reshape(X_test, (X_test.shape[0], dx, dy, dz))
 
+    print(y_train.shape)
+    print(y_test.shape)
+
+    print(70 * "*")
+    print(y_train)
+
     y_train = to_categorical(y_train, num_classes=2)
     y_test = to_categorical(y_test, num_classes=2)
+
+    print(y_train.shape)
+    print(y_test.shape)
+
+    print(70 * "*")
+    print(y_train)
 
     batch_size = config["batch_size"]   
     epochs = config["epochs"]
