@@ -45,6 +45,11 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
 
     X_train = tf.random.normal([1000, 28, 28, 1])
     y_train = tf.one_hot(tf.random.uniform([1000], maxval=2, dtype=tf.int32), depth=2)
+    X_test = tf.random.normal([200, 28, 28, 1])
+    y_test = tf.one_hot(tf.random.uniform([200], maxval=2, dtype=tf.int32), depth=2)
+
+    print(type(X_train))  # Should print <class 'tensorflow.python.framework.ops.EagerTensor'>
+    print(type(y_train))  # Should print <class 'tensorflow.python.framework.ops.EagerTensor'>
 
     model.fit(
         X_train,
