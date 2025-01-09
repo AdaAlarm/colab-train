@@ -18,15 +18,19 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     print("model shape:", (dx,dy))
     print("samples:", len(X_train))
 
+    # Ensure X_train and X_test are TensorFlow tensors
+    X_train = tf.convert_to_tensor(X_train, dtype=tf.float32)
+    X_test = tf.convert_to_tensor(X_test, dtype=tf.float32)
+
     # Reshape input tensors
     X_train = tf.reshape(X_train, (tf.shape(X_train)[0], dx, dy, dz))
     X_test = tf.reshape(X_test, (tf.shape(X_test)[0], dx, dy, dz))
 
-    # One-hot encode the labels only if necessary
-    if len(y_train.shape) == 1:  # Labels are not one-hot encoded
-        y_train = tf.one_hot(y_train, depth=2)
-    if len(y_test.shape) == 1:
-        y_test = tf.one_hot(y_test, depth=2)
+    # Ensure labels remain as NumPy arrays (do not modify them)
+    if isinstance(y_train, tf.Tensor):
+        y_train = y_train.numpy()
+    if isinstance(y_test, tf.Tensor):
+        y_test = y_test.numpy()
 
     print(y_train.shape)
     print(y_test.shape)
