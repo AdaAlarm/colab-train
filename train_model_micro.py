@@ -60,7 +60,7 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     #model.save_weights("colab-train/data/weights.tf")
 
     if config["pruning"]:
-        import tensorflow_model_optimization as tfmot
+        import tensorflow_model_optimization as tfomt
 
         print("Begin pruning ...")
 
