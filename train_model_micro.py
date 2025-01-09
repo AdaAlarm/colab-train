@@ -10,20 +10,25 @@ from tensorflow.keras.utils import to_categorical
 
 
 @tf.function
-def train_evaluate(config=default_conf, save_model=False):
-    (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
-
-    y_train = to_categorical(y_train, num_classes=2)
-    y_test = to_categorical(y_test, num_classes=2)
-
+def train_evaluate(X_train, X_test, y_train, y_test, config=default_conf, save_model=False):
     dx, dy, dz = X_train.shape[1], X_train.shape[2], 1
     lr = config['lr']
 
     print("model shape:", (dx,dy))
     print("samples:", len(X_train))
 
-    X_train = X_train.reshape((X_train.shape[0], dx, dy, dz))
-    X_test = X_test.reshape((X_test.shape[0], dx, dy, dz))
+    X_train = np.array(X_train).reshape((X_train.shape[0], dx, dy, dz))
+    X_test = np.array(X_test).reshape((X_test.shape[0], dx, dy, dz))
+    y_train = np.array(y_train)
+    y_test = np.array(y_train)
+    
+    # Fix y_train shape if necessary
+    if len(y_train.shape) > 2:
+        y_train = np.squeeze(y_train)
+
+    # Ensure one-hot encoding
+    if y_train.ndim == 1 or y_train.shape[1] == 1:
+        y_train = to_categorical(y_train, num_classes=2)
 
     batch_size = config["batch_size"]   
     epochs = config["epochs"]
@@ -60,7 +65,9 @@ def train_evaluate(config=default_conf, save_model=False):
 
 
 if __name__ == '__main__':
-    train_evaluate(save_model=True)
+    (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
+
+    train_evaluate(X_train, X_test, y_train, y_test, save_model=True)
 
 # (25,21):
 # Test accuracy: 0.9547124
