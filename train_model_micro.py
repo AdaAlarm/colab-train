@@ -6,9 +6,15 @@ from model_micro import make_model
 from preprocess_micro import make_data
 from conf import default_conf
 
+from tensorflow.keras.utils import to_categorical
+
+
 
 def train_evaluate(config=default_conf, save_model=False):
     (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
+
+    y_train = to_categorical(y_train, num_classes=2)
+    y_test = to_categorical(y_test, num_classes=2)
 
     dx, dy, dz = X_train.shape[1], X_train.shape[2], 1
     lr = config['lr']
@@ -23,14 +29,11 @@ def train_evaluate(config=default_conf, save_model=False):
     epochs = config["epochs"]
 
     model = make_model(dx, dy, dz)
+    
     model.compile(
         loss=keras.losses.BinaryCrossentropy(),
         optimizer=keras.optimizers.Adam(learning_rate=lr),
-        # optimizer=Adadelta(
-        #     learning_rate=1.0, rho=0.9999, epsilon=1e-08, decay=0.
-        # ),
         metrics=[
-            # 'accuracy'
             keras.metrics.BinaryAccuracy()
         ]
     )
@@ -42,9 +45,8 @@ def train_evaluate(config=default_conf, save_model=False):
         epochs=epochs,
         verbose=1,
         validation_split=1.0-config["split_ratio"]
-        #shuffle=True,
     )
-    #model.summary()
+
     score = model.evaluate(X_test, y_test, verbose=0)
 
     print('Test score:', score[0])
