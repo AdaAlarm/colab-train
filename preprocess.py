@@ -51,67 +51,6 @@ def file_to_vec(audio_processor, model_settings, filename=None):
     return results[0]
 
 
-def get_data(audio_processor, model_settings, sample=False):
-    pickle_file = 'colab-train/data/data.pickle'
-    try:
-        # load existing preprocessed data
-        with open(pickle_file, 'rb') as handle:
-            print("loaded data cache.")
-            data = pickle.load(handle)
-    except:
-        # preprocessed file does not exist; make it
-        baby = glob.glob("colab-train/dataset/baby/*.wav")
-        other = glob.glob("colab-train/dataset/other/*.wav")
-
-        # allow sampling for rapid prototyping
-        if sample:
-            np.random.shuffle(baby)
-            np.random.shuffle(other)
-            baby = baby[0:50]
-            other = other[0:50]
-
-        total_files = len(baby) + len(other)
-
-        print("files:", total_files)
-        print("start preprocess...")
-        c = 0
-
-        data = []
-        for f in baby:
-            data.append(
-                {
-                    "x": file_to_vec(audio_processor, model_settings, f),
-                    "y": CRYING,
-                    "path": f
-                }
-            )
-            c += 1
-            #print((c/total_files)*100, "%")
-        for f in other:
-            data.append(
-                {
-                    "x": file_to_vec(audio_processor, model_settings, f),
-                    "y": NOT_CRYING,
-                    "path": f
-                }
-            )
-            c += 1
-            #print((c/total_files)*100, "%")
-
-        print("preprocess done")
-
-        np.random.shuffle(data)
-
-        # finally save file for next time
-        with open(pickle_file, 'wb') as handle:
-            pickle.dump(data, handle)
-
-    X = np.array([d["x"] for d in data])
-    y = np.array([d["y"] for d in data])
-
-    return X, y, [d["path"] for d in data]
-
-
 def return_train_test(split_ratio, X, y, files, micro, sample):
     random_state = 42
 

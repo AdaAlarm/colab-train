@@ -2,7 +2,6 @@ import joblib
 import tensorflow as tf
 
 from model_micro import make_model
-from preprocess_micro import make_data
 from conf import default_conf
 
 from tensorflow.keras.utils import to_categorical
@@ -75,11 +74,14 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
 if __name__ == '__main__':
     conf = default_conf
 
-    (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(conf)
+    #from preprocess_micro import make_data
+    #(X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(conf)
 
-    #tf.data.experimental.enable_debug_mode()
-    tf.config.run_functions_eagerly(True)
     
+    from dataset import load_data
+    (X_train, X_test, y_train, y_test, paths_train, paths_test) = load_data()
+    
+    tf.config.run_functions_eagerly(True)
     print("Eager execution enabled:", tf.executing_eagerly())  # Should print True
 
     train_evaluate(X_train, X_test, y_train, y_test, conf, save_model=True)
