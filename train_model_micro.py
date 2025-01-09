@@ -38,7 +38,7 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
         loss=tf.keras.losses.BinaryCrossentropy(),
         optimizer=tf.keras.optimizers.Adam(learning_rate=lr),
         metrics=[
-            tf.keras.metrics.BinaryAccuracy()
+            tf.keras.metrics.Accuracy()
         ]
     )
 

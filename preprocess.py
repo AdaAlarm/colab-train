@@ -52,7 +52,8 @@ def file_to_vec(audio_processor, model_settings, filename=None):
 
 
 def get_data(audio_processor, model_settings, sample=False):
-    pickle_file = 'colab-train/data/data.pickle'
+    from conf import default_conf
+    pickle_file = default_conf['dataset_path']
     try:
         # load existing preprocessed data
         with open(pickle_file, 'rb') as handle:
