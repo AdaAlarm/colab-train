@@ -6,8 +6,10 @@ from preprocess_micro import make_data
 from conf import default_conf
 
 #from tensorflow.keras.optimizers.legacy import Adam
+from tensorflow.python.data.ops.dataset_ops import AUTOTUNE
 
-@tf.function
+
+
 def train_evaluate(config=default_conf, save_model=False):
     (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
 
@@ -22,16 +24,14 @@ def train_evaluate(config=default_conf, save_model=False):
 
     batch_size = config["batch_size"]
 
-    train_dataset = tf.data.Dataset.from_tensor_slices((X_train, y_train)).batch(batch_size)
-    validation_dataset = tf.data.Dataset.from_tensor_slices((X_test, y_test)).batch(batch_size)
+    train_dataset = tf.data.Dataset.from_tensor_slices((X_train, y_train)).batch(batch_size).prefetch(AUTOTUNE)
+    validation_dataset = tf.data.Dataset.from_tensor_slices((X_test, y_test)).batch(batch_size).prefetch(AUTOTUNE)
 
-    # Convert the dataset to NumPy-like format
-    train_dataset = list(train_dataset.as_numpy_iterator())
-    validation_dataset = list(validation_dataset.as_numpy_iterator())
+    # Manually specify a known cardinality for debugging
+    train_dataset = train_dataset.apply(tf.data.experimental.assert_cardinality(len(X_train)))
+    validation_dataset = validation_dataset.apply(tf.data.experimental.assert_cardinality(len(X_test)))
 
     epochs = config["epochs"]
-    if config["sample"]:
-        epochs = 2
 
     model = make_model(dx, dy, dz)
     model.compile(
