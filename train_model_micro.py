@@ -8,6 +8,8 @@ from conf import default_conf
 
 from tensorflow.keras.utils import to_categorical
 
+import numpy as np
+
 
 @tf.function
 def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
