@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 from conf import default_conf
 
 def load_data():
-    pickle_file = conf['dataset_path']
+    pickle_file = default_conf['dataset_path']
 
     # load existing preprocessed data
     with open(pickle_file, 'rb') as handle:
