@@ -19,6 +19,9 @@ def train_evaluate(config=default_conf, save_model=False):
     X_train = X_train.reshape((X_train.shape[0], dx, dy, dz))
     X_test = X_test.reshape((X_test.shape[0], dx, dy, dz))
 
+    train_dataset = tf.data.Dataset.from_tensor_slices((X_train, y_train)).batch(batch_size)
+    validation_dataset = tf.data.Dataset.from_tensor_slices((X_test, y_test)).batch(batch_size)
+
     epochs = config["epochs"]
     if config["sample"]:
         epochs = 2
@@ -34,11 +37,11 @@ def train_evaluate(config=default_conf, save_model=False):
     )
 
     model.fit(
-        X_train, y_train,
+        train_dataset,
         batch_size=256,
         epochs=epochs,
         verbose=1,
-        validation_split=1.0-config["split_ratio"]
+        validation_split=validation_dataset
         #shuffle=True,
     )
     #model.summary()
