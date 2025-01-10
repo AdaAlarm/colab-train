@@ -10,6 +10,7 @@ from tensorflow.keras.utils import to_categorical
 
 import numpy as np
 import os
+import tempfile
 
 def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     dx, dy, dz = X_train.shape[1], X_train.shape[2], 1
