@@ -19,7 +19,7 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     batch_size = config["batch_size"]   
     epochs = config["epochs"]    
 
-    model = tf.saved_model.load("colab-train/data/saved-model/")
+    model = keras.saving.load_model("colab-train/data/saved-model/")
     
 
     if config["pruning"]:
