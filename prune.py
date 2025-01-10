@@ -77,9 +77,15 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
         print('Pruned Test score:', score_pruned[0])
         print('Pruned Test accuracy:', score_pruned[1])
 
-        model_for_pruning.export("colab-train/data/saved-pruned-model/")
+        #model_for_pruning.export("colab-train/data/saved-pruned-model/")
         #tf.keras.models.save_model(model, "colab-train/data/model.h5", include_optimizer=False)
         #model.save_weights("colab-train/data/weights.tf")
+
+        # STRIP
+        model_for_export = tfmot.sparsity.keras.strip_pruning(model_for_pruning)
+        model_for_export.export("colab-train/data/saved-pruned-model/")
+
+
 
     return score_pruned, (dx,dy)
 
