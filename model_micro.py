@@ -12,11 +12,11 @@ from tf_keras.optimizers.legacy import Adam
 from tf_keras.regularizers import l2
 
 def make_model(x, y, z=1):
-    nb_filters = 42  # number of convolutional filters to use
-    kernel_size = (2, 2)  # convolution kernel size
+    nb_filters = 32  # number of convolutional filters to use
+    kernel_size = (3, 3)  # convolution kernel size
     pool_size = (2, 2)  # size of pooling area for pooling
 
-    nb_layers = 8
+    nb_layers = 4
     #fully_connected = 20
 
     model = Sequential()
@@ -33,7 +33,7 @@ def make_model(x, y, z=1):
 
     for layer in range(nb_layers):
         model.add(Conv2D(
-            nb_filters,
+            nb_filters * (2 ** layer),
             kernel_size=kernel_size,
             #activation='softmax',
             #kernel_regularizer=kr,
