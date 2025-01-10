@@ -80,7 +80,7 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
         model_for_pruning = prune_low_magnitude(model, **pruning_params)
 
         # `prune_low_magnitude` requires a recompile.
-        model.compile(
+        model_for_pruning.compile(
             loss=keras.losses.BinaryCrossentropy(),
             optimizer=keras.optimizers.Adam(learning_rate=lr),
             metrics=[
