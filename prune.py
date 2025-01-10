@@ -31,11 +31,11 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
 
         # Define model for pruning.
         num_images = X_train.shape[0]
-        end_step = np.ceil(num_images / batch_size).astype(np.int32) * epochs
+        end_step = np.ceil(num_images / batch_size).astype(np.int32) * epochs * 0.9
 
         pruning_params = {
-              'pruning_schedule': tfmot.sparsity.keras.PolynomialDecay(initial_sparsity=0.10,
-                                                                       final_sparsity=0.50,
+              'pruning_schedule': tfmot.sparsity.keras.PolynomialDecay(initial_sparsity=0.20,
+                                                                       final_sparsity=0.60,
                                                                        begin_step=0,
                                                                        end_step=end_step)
         }
@@ -45,7 +45,7 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
         # `prune_low_magnitude` requires a recompile.
         model_for_pruning.compile(
             loss=keras.losses.BinaryCrossentropy(),
-            optimizer=keras.optimizers.Adam(learning_rate=lr),
+            optimizer=keras.optimizers.Adam(learning_rate=lr/10),
             metrics=[
                 keras.metrics.BinaryAccuracy()
             ]
