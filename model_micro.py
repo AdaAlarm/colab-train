@@ -16,7 +16,7 @@ def make_model(x, y, z=1):
     kernel_size = (2, 2)  # convolution kernel size
     pool_size = (2, 2)  # size of pooling area for pooling
 
-    nb_layers = 6
+    nb_layers = 8
     #fully_connected = 20
 
     model = Sequential()
