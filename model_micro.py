@@ -34,7 +34,7 @@ def make_model(x, y, z=1):
     for layer in range(nb_layers):
         model.add(Conv2D(
             #nb_filters * (2 ** layer),
-            nb_filters
+            nb_filters,
             kernel_size=kernel_size,
             #activation='softmax',
             #kernel_regularizer=kr,
