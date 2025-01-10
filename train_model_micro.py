@@ -4,6 +4,8 @@ import tensorflow as tf
 from model_micro import make_model
 from conf import default_conf
 
+import tf_keras as keras
+
 from tensorflow.keras.utils import to_categorical
 
 import numpy as np
@@ -35,10 +37,10 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     model = make_model(dx, dy, dz)
     
     model.compile(
-        loss=tf.keras.losses.BinaryCrossentropy(),
-        optimizer=tf.keras.optimizers.Adam(learning_rate=lr),
+        loss=keras.losses.BinaryCrossentropy(),
+        optimizer=keras.optimizers.Adam(learning_rate=lr),
         metrics=[
-            tf.keras.metrics.BinaryAccuracy()
+            keras.metrics.BinaryAccuracy()
         ]
     )
 
@@ -78,10 +80,10 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
 
         # `prune_low_magnitude` requires a recompile.
         model.compile(
-            loss=tf.keras.losses.BinaryCrossentropy(),
-            optimizer=tf.keras.optimizers.Adam(learning_rate=lr),
+            loss=keras.losses.BinaryCrossentropy(),
+            optimizer=keras.optimizers.Adam(learning_rate=lr),
             metrics=[
-                tf.keras.metrics.BinaryAccuracy()
+                keras.metrics.BinaryAccuracy()
             ]
         )
 
