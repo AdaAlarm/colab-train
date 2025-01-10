@@ -19,7 +19,7 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     batch_size = config["batch_size"]   
     epochs = config["epochs"]    
 
-    model = tf.saved_model.load("exported_model")
+    model = tf.saved_model.load("colab-train/data/saved-model/")
     
 
     if config["pruning"]:
@@ -74,9 +74,6 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
 
         score_pruned = model_for_pruning.evaluate(X_test, y_test, verbose=0)
 
-        print('Test score:', score[0])
-        print('Test accuracy:', score[1])
-
         print('Pruned Test score:', score_pruned[0])
         print('Pruned Test accuracy:', score_pruned[1])
 
@@ -84,7 +81,7 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
         #tf.keras.models.save_model(model, "colab-train/data/model.h5", include_optimizer=False)
         #model.save_weights("colab-train/data/weights.tf")
 
-    return score, (dx,dy)
+    return score_pruned, (dx,dy)
 
 
 if __name__ == '__main__':
