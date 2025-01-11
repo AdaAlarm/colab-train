@@ -6,8 +6,6 @@ from conf import default_conf
 
 import tf_keras as keras
 
-from tensorflow.keras.utils import to_categorical
-
 import numpy as np
 import os
 import tempfile
