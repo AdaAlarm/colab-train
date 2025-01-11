@@ -71,6 +71,7 @@ def make_model(x, y, z=1):
     ))
     model.add(Activation('relu6'))
     model.add(MaxPooling2D(pool_size=pool_size))
+    model.add(Dropout(0.2))
 
     # Additional Conv2D Layers
     for _ in range(nb_layers - 1):
@@ -82,6 +83,7 @@ def make_model(x, y, z=1):
         ))
         model.add(Activation('relu6'))
         model.add(MaxPooling2D(pool_size=pool_size))
+        model.add(Dropout(0.3))
 
     # Flatten and Dense layers
     model.add(Flatten())
