@@ -64,6 +64,8 @@ def make_model(x, y, z=1):
     return model
 
     # Test accuracy: 0.9653705954551697 (2,2 kernel; 32 filters)
+    # Test accuracy: 0.XX (3,3 kernel; 32 filters)
+    # Test accuracy: 0.XX (3,3 kernel; 24 filters)
 
 
 if __name__ == "__main__":
