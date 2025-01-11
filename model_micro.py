@@ -51,17 +51,18 @@ def make_model_orig(x, y, z=1):
     # Test accuracy: 0.XX (3,3 kernel; 32 filters)
     # Test accuracy: 0.XX (3,3 kernel; 24 filters)
 
+
 # gpt 11.01.2025
 def make_model(x, y, z=1):
-    nb_filters = 32  # Increased number of filters for better feature extraction
+    nb_filters = 24  # Reduced filters to fit size constraints
     kernel_size = (3, 3)
     pool_size = (2, 2)
-    nb_layers = 4  # Use all available compute to maximize accuracy
+    nb_layers = 4
 
     model = Sequential()
     model.add(InputLayer(input_shape=(x, y, z)))
 
-    # Initial Conv2D layer
+    # First Conv2D Layer
     model.add(Conv2D(
         nb_filters,
         kernel_size=kernel_size,
@@ -71,7 +72,7 @@ def make_model(x, y, z=1):
     model.add(Activation('relu6'))
     model.add(MaxPooling2D(pool_size=pool_size))
 
-    # Additional Conv2D layers
+    # Additional Conv2D Layers
     for _ in range(nb_layers - 1):
         model.add(Conv2D(
             nb_filters,
@@ -82,12 +83,13 @@ def make_model(x, y, z=1):
         model.add(Activation('relu6'))
         model.add(MaxPooling2D(pool_size=pool_size))
 
-    # Flatten and Dense layer for classification
+    # Flatten and Dense layers
     model.add(Flatten())
-    model.add(Dense(16, activation='relu6'))  # Intermediate Dense layer
-    model.add(Dense(2, activation='softmax'))  # Output layer
+    model.add(Dense(16, activation='relu6'))
+    model.add(Dense(2, activation='softmax'))
 
     return model
+
 
 
 if __name__ == "__main__":
