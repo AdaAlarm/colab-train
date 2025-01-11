@@ -1,55 +1,86 @@
-from model_micro import make_model
 import joblib
-from preprocess_micro import make_data
+import tensorflow as tf
+
+from model_micro import make_model
 from conf import default_conf
 
-import tensorflow as tf
-from tensorflow.keras.optimizers.legacy import Adam
+import tf_keras as keras
 
-def train_evaluate(config=default_conf, save_model=False):
-    (X_train, X_test, y_train, y_test, paths_train, paths_test) = make_data(config)
+from tensorflow.keras.utils import to_categorical
 
+import numpy as np
+import os
+import tempfile
+
+def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     dx, dy, dz = X_train.shape[1], X_train.shape[2], 1
     lr = config['lr']
 
-    #print("shape:", (dx,dy))
+    print("model shape:", (dx,dy))
+    print("samples:", len(X_train))
 
-    X_train = X_train.reshape((X_train.shape[0], dx, dy, dz))
-    X_test = X_test.reshape((X_test.shape[0], dx, dy, dz))
+    # Ensure X_train and X_test are TensorFlow tensors
+    X_train = tf.convert_to_tensor(X_train, dtype=tf.float32)
+    X_test = tf.convert_to_tensor(X_test, dtype=tf.float32)
 
-    model = make_model(dx, dy, dz, lr)
+    # Reshape input tensors
+    X_train = tf.reshape(X_train, (tf.shape(X_train)[0], dx, dy, dz))
+    X_test = tf.reshape(X_test, (tf.shape(X_test)[0], dx, dy, dz))
+
+
+    print(y_train.shape)
+    print(y_test.shape)
+    print(70 * "*")
+    
+    batch_size = config["batch_size"]   
+    epochs = config["epochs"]
+
+    model = make_model(dx, dy, dz)
+    
     model.compile(
-        loss='binary_crossentropy',
-        optimizer=Adam(learning_rate=lr),
-        # optimizer=Adadelta(
-        #     learning_rate=1.0, rho=0.9999, epsilon=1e-08, decay=0.
-        # ),
-        metrics=['accuracy']
+        loss=keras.losses.BinaryCrossentropy(),
+        optimizer=keras.optimizers.Adam(learning_rate=lr),
+        metrics=[
+            keras.metrics.BinaryAccuracy()
+        ]
     )
+
     model.fit(
-        X_train, y_train,
-        batch_size=256,
-        epochs=config["epochs"],
-        verbose=1,
-        validation_split=1.0-config["split_ratio"]
-        #shuffle=True,
+        X_train,
+        y_train,
+        batch_size=batch_size,
+        epochs=epochs,
+        validation_data=(X_test, y_test)
     )
-    #model.summary()
-    score = model.evaluate(X_test, y_test, verbose=0)
+
+    score = model.evaluate(X_test, y_test)
 
     print('Test score:', score[0])
     print('Test accuracy:', score[1])
 
-    if save_model:
-        model.save("colab-train/data/saved-model/", include_optimizer=False)
-        #tf.keras.models.save_model(model, "colab-train/data/model.h5", include_optimizer=False)
-        #model.save_weights("colab-train/data/weights.tf")
+    model.save("colab-train/data/saved-model/")
+    #keras.models.save_model(model, "colab-train/data/model.h5", include_optimizer=False)
+    #model.save_weights("colab-train/data/weights.tf")
 
     return score, (dx,dy)
 
 
 if __name__ == '__main__':
-    train_evaluate(save_model=True)
+    conf = default_conf
+
+    if os.path.isfile(conf['dataset_path']):
+        from dataset import load_data
+        (X_train, X_test, y_train, y_test, paths_train, paths_test) = load_data()
+    else:
+        raise Exception("dataset not found, run make_data")
+    
+    tf.config.run_functions_eagerly(True)
+
+    train_evaluate(X_train, X_test, y_train, y_test, conf, save_model=True)
+
+# (25,21):
+# Test accuracy: 0.9547124
+
 
 # (49,20):
 # Test accuracy: 0.9279835224151611
