@@ -67,7 +67,7 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
         model_for_pruning.fit(
             X_train, y_train,
             batch_size=batch_size,
-            epochs=1,
+            epochs=epochs,
             validation_data=(X_test, y_test),
             callbacks=callbacks
         )

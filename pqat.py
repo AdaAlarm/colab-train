@@ -48,10 +48,15 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
             validation_data=(X_test, y_test)
         )
 
+        score_pqat = pqat_model.evaluate(X_test, y_test, verbose=0)
+
+        print('PQAT Test score:', score_pqat[0])
+        print('PQAT Test accuracy:', score_pqat[1])
+
         pqat_model.save("colab-train/data/pqat_model/")
 
 
-    return score_pruned, (dx,dy)
+    return score_pqat, (dx,dy)
 
 
 if __name__ == '__main__':
