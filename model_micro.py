@@ -42,7 +42,9 @@ def make_model(x, y, z=1):
         ))
         model.add(BatchNormalization())
         model.add(Activation('relu'))
+        model.add(Dropout(0.4))
         model.add(MaxPooling2D(pool_size=pool_size))#, padding="same"))
+
 
     #model.add(MaxPooling2D(pool_size=pool_size))
     #model.add(AveragePooling2D(pool_size=pool_size))
