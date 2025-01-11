@@ -73,7 +73,7 @@ def make_model(x, y, z=1):
     
     # Additional layers with depthwise separable convolutions
     for layer in range(nb_layers):
-        model.add(SeparableConv2D(
+        model.add(Conv2D(
             nb_filters,
             kernel_size=kernel_size,
             padding='same',
