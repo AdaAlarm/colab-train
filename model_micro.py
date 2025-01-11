@@ -11,7 +11,7 @@ from tf_keras.layers import DepthwiseConv2D, AveragePooling2D, GlobalAveragePool
 from tf_keras.optimizers.legacy import Adam
 from tf_keras.regularizers import l2
 
-def make_model_orig(x, y, z=1):
+def make_model(x, y, z=1):
     nb_filters = 30  # number of convolutional filters to use
     kernel_size = (3, 3)  # convolution kernel size
     pool_size = (2, 2)  # size of pooling area for pooling
