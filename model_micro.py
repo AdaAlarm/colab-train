@@ -53,15 +53,15 @@ def make_model_orig(x, y, z=1):
 
 # gpt 11.01.2025
 def make_model(x, y, z=1):
-    nb_filters = 16  # Reduced number of filters
+    nb_filters = 32  # Increased number of filters for better feature extraction
     kernel_size = (3, 3)
     pool_size = (2, 2)
-    nb_layers = 3  # Reduced number of layers
-    
+    nb_layers = 4  # Use all available compute to maximize accuracy
+
     model = Sequential()
     model.add(InputLayer(input_shape=(x, y, z)))
-    
-    # First convolutional layer
+
+    # Initial Conv2D layer
     model.add(Conv2D(
         nb_filters,
         kernel_size=kernel_size,
@@ -70,9 +70,9 @@ def make_model(x, y, z=1):
     ))
     model.add(Activation('relu6'))
     model.add(MaxPooling2D(pool_size=pool_size))
-    
-    # Additional layers with depthwise separable convolutions
-    for layer in range(nb_layers):
+
+    # Additional Conv2D layers
+    for _ in range(nb_layers - 1):
         model.add(Conv2D(
             nb_filters,
             kernel_size=kernel_size,
@@ -81,9 +81,11 @@ def make_model(x, y, z=1):
         ))
         model.add(Activation('relu6'))
         model.add(MaxPooling2D(pool_size=pool_size))
-    
+
+    # Flatten and Dense layer for classification
     model.add(Flatten())
-    model.add(Dense(2, activation='softmax'))
+    model.add(Dense(16, activation='relu6'))  # Intermediate Dense layer
+    model.add(Dense(2, activation='softmax'))  # Output layer
 
     return model
 
