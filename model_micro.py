@@ -11,18 +11,16 @@ from tf_keras.layers import DepthwiseConv2D, AveragePooling2D, GlobalAveragePool
 from tf_keras.optimizers.legacy import Adam
 from tf_keras.regularizers import l2
 
-def make_model(x, y, z=1):
+def make_model_orig(x, y, z=1):
     nb_filters = 24  # number of convolutional filters to use
     kernel_size = (3, 3)  # convolution kernel size
     pool_size = (2, 2)  # size of pooling area for pooling
 
     nb_layers = 4
-    #fully_connected = 20
 
     model = Sequential()
     model.add(InputLayer(input_shape=(x, y, z)))
     
-    #for layer in range(nb_layers-1):
     model.add(Conv2D(
         nb_filters,
         kernel_size=kernel_size
@@ -35,38 +33,59 @@ def make_model(x, y, z=1):
         model.add(Conv2D(
             nb_filters,
             kernel_size=kernel_size,
-            #activation='softmax',
-            #kernel_regularizer=kr,
             use_bias=False,
             padding='same'
         ))
         model.add(BatchNormalization())
         model.add(Activation('relu'))
-        model.add(MaxPooling2D(pool_size=pool_size))#, padding="same"))
+        model.add(MaxPooling2D(pool_size=pool_size))
 
-
-    #model.add(MaxPooling2D(pool_size=pool_size))
-    #model.add(AveragePooling2D(pool_size=pool_size))
-
-    #model.add(Dense(fully_connected, activation='softmax'))
     model.add(Dropout(0.6))
 
     model.add(Flatten())
     model.add(Dense(2, activation='softmax'))
-    # model.compile(
-    #     loss='binary_crossentropy',
-    #     optimizer=Adam(learning_rate=lr),
-    #     # optimizer=Adadelta(
-    #     #     learning_rate=1.0, rho=0.9999, epsilon=1e-08, decay=0.
-    #     # ),
-    #     metrics=['accuracy']
-    # )
 
     return model
 
     # Test accuracy: 0.9653705954551697 (2,2 kernel; 32 filters)
     # Test accuracy: 0.XX (3,3 kernel; 32 filters)
     # Test accuracy: 0.XX (3,3 kernel; 24 filters)
+
+# gpt 11.01.2025
+def make_model(x, y, z=1):
+    nb_filters = 16  # Reduced number of filters
+    kernel_size = (3, 3)
+    pool_size = (2, 2)
+    nb_layers = 3  # Reduced number of layers
+    
+    model = Sequential()
+    model.add(InputLayer(input_shape=(x, y, z)))
+    
+    # First convolutional layer
+    model.add(Conv2D(
+        nb_filters,
+        kernel_size=kernel_size,
+        padding='same',
+        use_bias=False
+    ))
+    model.add(Activation('relu6'))
+    model.add(MaxPooling2D(pool_size=pool_size))
+    
+    # Additional layers with depthwise separable convolutions
+    for layer in range(nb_layers):
+        model.add(SeparableConv2D(
+            nb_filters,
+            kernel_size=kernel_size,
+            padding='same',
+            use_bias=False
+        ))
+        model.add(Activation('relu6'))
+        model.add(MaxPooling2D(pool_size=pool_size))
+    
+    model.add(Flatten())
+    model.add(Dense(2, activation='softmax'))
+
+    return model
 
 
 if __name__ == "__main__":
