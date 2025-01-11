@@ -42,7 +42,6 @@ def make_model(x, y, z=1):
         ))
         model.add(BatchNormalization())
         model.add(Activation('relu'))
-        model.add(Dropout(0.4))
         model.add(MaxPooling2D(pool_size=pool_size))#, padding="same"))
 
 
@@ -50,7 +49,7 @@ def make_model(x, y, z=1):
     #model.add(AveragePooling2D(pool_size=pool_size))
 
     #model.add(Dense(fully_connected, activation='softmax'))
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.6))
 
     model.add(Flatten())
     model.add(Dense(2, activation='softmax'))
