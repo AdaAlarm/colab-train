@@ -34,8 +34,8 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
         end_step = np.ceil(num_images / batch_size).astype(np.int32) * epochs * 0.9
 
         pruning_params = {
-              'pruning_schedule': tfmot.sparsity.keras.PolynomialDecay(initial_sparsity=0.10,
-                                                                       final_sparsity=0.50,
+              'pruning_schedule': tfmot.sparsity.keras.PolynomialDecay(initial_sparsity=0.15,
+                                                                       final_sparsity=0.60,
                                                                        begin_step=0,
                                                                        end_step=end_step)
         }

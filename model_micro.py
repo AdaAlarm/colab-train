@@ -12,8 +12,8 @@ from tf_keras.optimizers.legacy import Adam
 from tf_keras.regularizers import l2
 
 def make_model(x, y, z=1):
-    nb_filters = 30  # number of convolutional filters to use
-    kernel_size = (3, 3)  # convolution kernel size
+    nb_filters = 32  # number of convolutional filters to use
+    kernel_size = (2, 2)  # convolution kernel size
     pool_size = (2, 2)  # size of pooling area for pooling
 
     nb_layers = 4
@@ -40,7 +40,7 @@ def make_model(x, y, z=1):
         model.add(Activation('relu6'))
         model.add(MaxPooling2D(pool_size=pool_size))
 
-    model.add(Dropout(0.4))
+    model.add(Dropout(0.5))
 
     model.add(Flatten())
     model.add(Dense(2, activation='softmax'))
@@ -48,8 +48,7 @@ def make_model(x, y, z=1):
     return model
 
     # Test accuracy: 0.9653705954551697 (2,2 kernel; 32 filters)
-    # Test accuracy: 0.XX (3,3 kernel; 32 filters)
-    # Test accuracy: 0.XX (3,3 kernel; 24 filters)
+    # Test accuracy: 0.9671931862831116 (3,3 kernel; 30 filters)
 
 
 
