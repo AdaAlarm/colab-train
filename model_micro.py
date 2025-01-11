@@ -40,7 +40,7 @@ def make_model(x, y, z=1):
         model.add(Activation('relu6'))
         model.add(MaxPooling2D(pool_size=pool_size))
 
-    model.add(Dropout(0.6))
+    model.add(Dropout(0.4))
 
     model.add(Flatten())
     model.add(Dense(2, activation='softmax'))
