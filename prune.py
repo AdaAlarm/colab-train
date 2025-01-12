@@ -17,7 +17,7 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     lr = config['lr']
     
     batch_size = config["batch_size"]   
-    epochs = config["epochs"]    
+    epochs = config["prune_epochs"]    
 
     model = keras.saving.load_model("colab-train/data/saved-model/")
     

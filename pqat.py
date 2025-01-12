@@ -14,9 +14,7 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
     dx, dy, dz = X_train.shape[1], X_train.shape[2], 1
     lr = config['lr']
     
-    batch_size = config["batch_size"]   
-    epochs = config["epochs"]    
-
+    batch_size = config["batch_size"]
 
     if config["pruning"]:
         import tensorflow_model_optimization as tfmot
