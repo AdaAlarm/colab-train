@@ -25,10 +25,13 @@ def train_evaluate(X_train, X_test, y_train, y_test, config, save_model=False):
         quant_aware_annotate_model = tfmot.quantization.keras.quantize_annotate_model(
             model_for_export
         )
-        pqat_model = tfmot.quantization.keras.quantize_apply(
-            quant_aware_annotate_model,
-            tfmot.experimental.combine.Default8BitPrunePreserveQuantizeScheme()
-        )
+        pqat_model = tfmot.clustering.keras.strip_clustering(quant_aware_annotate_model)
+        # pqat_model = tfmot.quantization.keras.quantize_apply(
+        #     quant_aware_annotate_model,
+        #     tfmot.experimental.combine.Default8BitPrunePreserveQuantizeScheme()
+        # )
+        pqat_model = tfmot.quantization.keras.quantize_apply(pqat_model)
+
 
         pqat_model.compile(
             loss=keras.losses.BinaryCrossentropy(),
