@@ -48,7 +48,7 @@ def file_to_vec(audio_processor, model_settings, filename=None):
         filename, model_settings, sess
     )
 
-    return tf.cast(results[0], tf.int16)
+    return results[0].astype(np.int16)
 
 
 def get_data(audio_processor, model_settings, sample=False):
