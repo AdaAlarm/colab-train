@@ -12,7 +12,7 @@ from tf_keras.optimizers.legacy import Adam
 from tf_keras.regularizers import l2
 
 def make_model(x, y, z=1):
-    nb_filters = 26  # number of convolutional filters to use
+    nb_filters = 25  # number of convolutional filters to use
     kernel_size = (2, 2)  # convolution kernel size
     pool_size = (2, 2)  # size of pooling area for pooling
 
@@ -27,7 +27,7 @@ def make_model(x, y, z=1):
     ))
     model.add(BatchNormalization())
     model.add(Activation('relu6'))
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.4))
 
     for layer in range(nb_layers):
         model.add(Conv2D(
@@ -40,7 +40,7 @@ def make_model(x, y, z=1):
         model.add(Activation('relu6'))
         model.add(MaxPooling2D(pool_size=pool_size))
 
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.4))
 
     model.add(Flatten())
     model.add(Dense(2, activation='softmax'))
